@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Financial Intelligence — Book Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:       #0F1B2D;
+      --navy-mid:   #1A2E47;
+      --spine:      #2C5F8A;
+      --spine-light:#3A7AB5;
+      --gold:       #C8A84B;
+      --gold-light: #E8C96A;
+      --cream:      #F7F4EE;
+      --cream-dark: #EDE9E1;
+      --divider:    #D9D4CA;
+      --slate:      #4A5568;
+      --slate-light:#718096;
+      --text:       #1A1A1A;
+      --green:      #276749;
+      --green-bg:   #E6F4ED;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── NAV BREADCRUMB ── */
+    .breadcrumb {
+      background: var(--navy);
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .breadcrumb a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .breadcrumb a:hover { color: var(--gold); }
+
+    .breadcrumb-sep {
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+    }
+
+    .breadcrumb-current {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.70);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background-color: var(--navy);
+      padding: 52px 40px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--spine);
+    }
+
+    .hero-spine-glow {
+      position: absolute;
+      top: 0; left: 0;
+      width: 420px;
+      height: 100%;
+      background: radial-gradient(ellipse at 0% 50%, rgba(44,95,138,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--spine-light);
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 700;
+      color: #FFFFFF;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .hero-author {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.50);
+      margin-bottom: 28px;
+    }
+
+    .hero-meta-row {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hero-meta-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.30);
+    }
+
+    .hero-meta-value {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* ── TABLE OF CONTENTS ── */
+    .toc-bar {
+      background: var(--navy-mid);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0 40px;
+      overflow-x: auto;
+    }
+
+    .toc-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0;
+    }
+
+    .toc-link {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.40);
+      text-decoration: none;
+      padding: 14px 18px;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .toc-link:hover {
+      color: rgba(255,255,255,0.80);
+      border-bottom-color: var(--spine-light);
+    }
+
+    /* ── CONTENT ── */
+    .content-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 56px 40px 80px;
+    }
+
+    /* Section header */
+    .section-anchor {
+      padding-top: 20px;
+    }
+
+    .section-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--spine);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    /* Body prose */
+    .prose {
+      font-size: 0.9625rem;
+      line-height: 1.78;
+      color: var(--slate);
+    }
+
+    .prose p { margin-bottom: 18px; }
+
+    .prose p:last-child { margin-bottom: 0; }
+
+    .prose strong {
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    .prose em {
+      font-style: italic;
+      color: var(--slate);
+    }
+
+    /* Sub-heading inside prose */
+    .prose-h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin: 32px 0 12px;
+    }
+
+    /* ── KEY CONCEPT CALLOUT ── */
+    .callout {
+      background: #FFFFFF;
+      border-left: 4px solid var(--spine);
+      border-radius: 0 4px 4px 0;
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+
+    .callout-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--spine);
+      margin-bottom: 8px;
+    }
+
+    .callout p {
+      font-size: 0.925rem;
+      line-height: 1.70;
+      color: var(--navy);
+      margin: 0;
+    }
+
+    /* ── TAKEAWAY LIST ── */
+    .takeaway-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 24px 0;
+    }
+
+    .takeaway-item {
+      background: #FFFFFF;
+      border: 1px solid var(--divider);
+      border-radius: 4px;
+      padding: 16px 20px 16px 52px;
+      position: relative;
+    }
+
+    .takeaway-item::before {
+      content: attr(data-n);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--spine);
+      position: absolute;
+      left: 18px;
+      top: 18px;
+    }
+
+    .takeaway-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .takeaway-body {
+      font-size: 0.875rem;
+      line-height: 1.65;
+      color: var(--slate);
+    }
+
+    /* ── RATIO TABLE ── */
+    .ratio-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 0.875rem;
+    }
+
+    .ratio-table th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--slate-light);
+      text-align: left;
+      padding: 10px 16px;
+      background: var(--cream-dark);
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .ratio-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--cream-dark);
+      vertical-align: top;
+      color: var(--slate);
+      line-height: 1.55;
+    }
+
+    .ratio-table tr:last-child td { border-bottom: none; }
+
+    .ratio-table tr:hover td { background: #FFFFFF; }
+
+    .ratio-name {
+      font-weight: 600;
+      color: var(--navy);
+      white-space: nowrap;
+    }
+
+    .ratio-formula {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--spine);
+      white-space: nowrap;
+    }
+
+    /* ── CRITIQUE CARD ── */
+    .critique-card {
+      background: #FFF9F0;
+      border: 1px solid #F0E0C0;
+      border-left: 4px solid var(--gold);
+      border-radius: 0 4px 4px 0;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+
+    .critique-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .critique-card p {
+      font-size: 0.9rem;
+      line-height: 1.70;
+      color: #5C4A20;
+      margin: 0;
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--divider);
+      margin: 52px 0 48px;
+    }
+
+    /* ── BACK BUTTON ── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--slate-light);
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color 0.15s;
+    }
+
+    .back-btn:hover { color: var(--navy); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--divider);
+      padding: 28px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    footer p { font-size: 12px; color: var(--slate-light); }
+
+    .footer-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--divider);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .breadcrumb { padding: 12px 20px; }
+      .hero { padding: 36px 24px 36px; }
+      .toc-bar { padding: 0 20px; }
+      .content-wrap { padding: 36px 24px 60px; }
+      .ratio-table { font-size: 0.82rem; }
+      .ratio-table th, .ratio-table td { padding: 10px 12px; }
+      footer { flex-direction: column; gap: 10px; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="index.html">Library</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current">Financial Intelligence</span>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-spine-glow"></div>
+    <div class="hero-inner">
+      <p class="hero-label">Book Analysis — Finance</p>
+      <h1>Financial Intelligence</h1>
+      <p class="hero-author">Karen Berman &amp; Joe Knight</p>
+      <div class="hero-meta-row">
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Publisher</span>
+          <span class="hero-meta-value">Harvard Business School Press</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">First Published</span>
+          <span class="hero-meta-value">2006</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Audience</span>
+          <span class="hero-meta-value">Non-financial managers</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Core Skill</span>
+          <span class="hero-meta-value">Reading &amp; interpreting financial statements</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- TOC Navigation -->
+  <nav class="toc-bar" aria-label="Page sections">
+    <div class="toc-inner">
+      <a class="toc-link" href="#overview">Overview</a>
+      <a class="toc-link" href="#art-of-finance">Art of Finance</a>
+      <a class="toc-link" href="#income-statement">Income Statement</a>
+      <a class="toc-link" href="#balance-sheet">Balance Sheet</a>
+      <a class="toc-link" href="#cash">Cash is King</a>
+      <a class="toc-link" href="#ratios">Ratios</a>
+      <a class="toc-link" href="#roi">ROI</a>
+      <a class="toc-link" href="#working-capital">Working Capital</a>
+      <a class="toc-link" href="#transparency">Transparency</a>
+      <a class="toc-link" href="#takeaways">Key Takeaways</a>
+      <a class="toc-link" href="#critique">Critique</a>
+    </div>
+  </nav>
+
+  <div class="content-wrap">
+    <a class="back-btn" href="index.html">← Back to Library</a>
+
+    <!-- ── OVERVIEW ── -->
+    <section class="section-anchor" id="overview">
+      <p class="section-eyebrow">What This Book Is</p>
+      <h2 class="section-title">Overview &amp; Core Argument</h2>
+      <div class="prose">
+        <p><em>Financial Intelligence</em> is a practical guide for non-financial managers — people in operations, sales, marketing, HR, or engineering who have never had formal training in reading financial statements. Berman and Knight argue that financial literacy is not a natural gift; it is a learnable skill set, and organizations perform demonstrably better when more people possess it.</p>
+        <p>Their central concept, <strong>financial intelligence</strong>, breaks down into four core competencies:</p>
+      </div>
+
+      <div class="takeaway-list" style="margin-top: 20px;">
+        <div class="takeaway-item" data-n="01">
+          <div class="takeaway-title">Understanding the Foundation</div>
+          <div class="takeaway-body">Reading the three primary financial statements: the income statement, balance sheet, and cash flow statement.</div>
+        </div>
+        <div class="takeaway-item" data-n="02">
+          <div class="takeaway-title">Recognizing the Art of Finance</div>
+          <div class="takeaway-body">Understanding where finance involves judgment, estimation, and bias — and knowing which numbers are "hard" vs. "soft."</div>
+        </div>
+        <div class="takeaway-item" data-n="03">
+          <div class="takeaway-title">Calculating &amp; Interpreting Ratios</div>
+          <div class="takeaway-body">Using ratios to compare performance over time and against industry peers, because raw numbers alone mean very little.</div>
+        </div>
+        <div class="takeaway-item" data-n="04">
+          <div class="takeaway-title">Applying the Knowledge</div>
+          <div class="takeaway-body">Using financial intelligence to make better decisions about ROI, capital expenditures, and working capital management.</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">Central Thesis</p>
+        <p>The single most important idea in the book: <strong>financial statements are not objective reality — they are a reflection of reality shaped by assumptions, estimates, and judgment calls.</strong> The art of accounting is the art of using limited data to come as close as possible to an accurate description of how well a company is performing. A financially intelligent manager understands where numbers are hard (well-supported, difficult to manipulate) versus soft (highly dependent on someone's judgment call).</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── ART OF FINANCE ── -->
+    <section class="section-anchor" id="art-of-finance">
+      <p class="section-eyebrow">Part One</p>
+      <h2 class="section-title">The Art of Finance</h2>
+      <div class="prose">
+        <p>The book opens by establishing that you cannot always trust the numbers at face value. Accountants must make educated guesses constantly: How long will a piece of equipment last? Which costs belong to which products? When should an expense be recognized? These decisions inject what Berman and Knight call <strong>bias</strong> into the numbers — not necessarily dishonesty, but the unavoidable result of quantifying an uncertain world.</p>
+
+        <h3 class="prose-h3">Accruals and Allocations</h3>
+        <p>When costs are incurred in one period but recognized across multiple periods (like prepaying a year of rent), accountants must spread that expense over time. How they do this involves judgment — and creates a legal opportunity to shift profits between reporting periods. A company facing a difficult month might amortize a large advertising expense over two years; a company with a great month might expense the entire amount immediately.</p>
+
+        <h3 class="prose-h3">Depreciation</h3>
+        <p>Equipment purchased for $1 million won't be expensed all at once. It's depreciated over its "useful life" — but accountants must <em>estimate</em> what that useful life is. Changing that estimate has a direct, sometimes massive effect on reported profit. The book uses a striking real-world example: when airlines extended the estimated useful life of their planes in the mid-1980s, the industry's reported profits rose significantly overnight — with no change in actual operations.</p>
+
+        <h3 class="prose-h3">Valuation</h3>
+        <p>When a company is acquired or an asset is valued, the method chosen (price-to-earnings, discounted cash flow, or asset valuation) produces dramatically different results. Each is built on its own set of assumptions about the future. This is the art of finance in its purest form, and understanding it gives a manager the confidence to challenge numbers rather than simply accept them.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">Practical Payoff</p>
+        <p>Once you understand that embedded judgments exist in every financial report, you gain both the knowledge and the right to ask questions. As one Ford executive put it to his finance team: <em>"Before I open these reports, I need to know — for how long and at what temperature?"</em> He was telling the finance people that he knew the numbers were shaped by assumptions and that he intended to ask about them.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── INCOME STATEMENT ── -->
+    <section class="section-anchor" id="income-statement">
+      <p class="section-eyebrow">Part Two</p>
+      <h2 class="section-title">The Income Statement</h2>
+      <div class="prose">
+        <p>The income statement answers one question: did the company make a profit selling its products or services during this period? It flows from revenue at the top down to net profit at the bottom, subtracting costs at each layer.</p>
+
+        <h3 class="prose-h3">The Structure</h3>
+      </div>
+
+      <table class="ratio-table">
+        <thead>
+          <tr>
+            <th>Line Item</th>
+            <th>What It Represents</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="ratio-name">Revenue</span></td>
+            <td>Sales recorded when earned — subject to revenue recognition timing choices.</td>
+          </tr>
+          <tr>
+            <td><span class="ratio-name">Cost of Goods Sold (COGS)</span></td>
+            <td>Direct costs tied to making or delivering what you sell.</td>
+          </tr>
+          <tr>
+            <td><span class="ratio-name">Gross Profit</span></td>
+            <td>Revenue minus COGS. Reveals the margin on the core product or service.</td>
+          </tr>
+          <tr>
+            <td><span class="ratio-name">Operating Expenses (SG&amp;A)</span></td>
+            <td>Overhead costs to run the business: salaries, rent, marketing, R&amp;D.</td>
+          </tr>
+          <tr>
+            <td><span class="ratio-name">Operating Profit (EBIT)</span></td>
+            <td>Profit before interest and taxes. Shows operational effectiveness.</td>
+          </tr>
+          <tr>
+            <td><span class="ratio-name">Net Profit</span></td>
+            <td>What remains after all costs, interest, and taxes. The "bottom line" — and always an estimate.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <p class="callout-label">Key Mantra</p>
+        <p><strong>Profit is an estimate.</strong> Because of accruals, depreciation choices, and allocation decisions embedded in the income statement, the net profit figure is a carefully constructed estimate, not a hard fact. You can spend cash. You cannot spend estimated profit.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── BALANCE SHEET ── -->
+    <section class="section-anchor" id="balance-sheet">
+      <p class="section-eyebrow">Part Three</p>
+      <h2 class="section-title">The Balance Sheet</h2>
+      <div class="prose">
+        <p>Most managers default to the income statement. Sophisticated investors and bankers read the balance sheet first. The balance sheet is a snapshot of what a company <em>owns</em> (assets) versus what it <em>owes</em> (liabilities), with the difference being owners' equity.</p>
+        <p>The fundamental equation: <strong>Assets = Liabilities + Owners' Equity.</strong> It always balances because every transaction has two sides — every change to one side is matched by a change somewhere else.</p>
+
+        <h3 class="prose-h3">Key Connection to the Income Statement</h3>
+        <p>One of the best-kept secrets in financial statements: <strong>a change in one statement nearly always impacts the others.</strong> Net profit from the income statement flows directly into retained earnings under owners' equity on the balance sheet. Every sale, every expense, every capital purchase ripples across all three statements.</p>
+        <p>The balance sheet reveals things the income statement hides: the company's debt burden, the quality of its assets, and whether it is generating or consuming cash over time. A company can show strong profits while its balance sheet quietly deteriorates — which is exactly what happened at Enron.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── CASH ── -->
+    <section class="section-anchor" id="cash">
+      <p class="section-eyebrow">Part Four</p>
+      <h2 class="section-title">Cash Is King</h2>
+      <div class="prose">
+        <p>This is the most practically important section for non-financial managers who assume that profit and cash are essentially the same thing. They are not, and the gap between them can destroy a company.</p>
+
+        <h3 class="prose-h3">Why Profit ≠ Cash</h3>
+        <p>A company can be highly profitable on paper and yet run out of cash. The book illustrates this with a new bakery whose income statement shows growing profits in months two and three, while the cash flow statement reveals the company is insolvent — because customers pay on credit (cash hasn't arrived yet), but suppliers and employees need to be paid now.</p>
+        <p>The two reasons profit and cash diverge: <strong>accrual accounting</strong> (revenue and expenses are recorded when earned/incurred, not when cash moves), and <strong>capital expenditures</strong> (large purchases appear on the balance sheet and are depreciated slowly, but the cash goes out the door all at once).</p>
+
+        <h3 class="prose-h3">The Three Sections of the Cash Flow Statement</h3>
+      </div>
+
+      <div class="takeaway-list">
+        <div class="takeaway-item" data-n="①">
+          <div class="takeaway-title">Cash from Operations</div>
+          <div class="takeaway-body">Cash generated by actually running the business. Adjusted from net profit for non-cash items (depreciation) and changes in working capital (receivables, inventory, payables). This is the most important section — it shows whether the core business generates real cash.</div>
+        </div>
+        <div class="takeaway-item" data-n="②">
+          <div class="takeaway-title">Cash from Investing</div>
+          <div class="takeaway-body">Cash spent on or received from capital expenditures and acquisitions. Consistent heavy investment is healthy; depreciation exceeding new investment may signal a company not preparing for its future.</div>
+        </div>
+        <div class="takeaway-item" data-n="③">
+          <div class="takeaway-title">Cash from Financing</div>
+          <div class="takeaway-body">Cash received from or returned to lenders and investors — loans, debt repayment, dividends, and stock issuance. Reveals how the company is funding itself.</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">Warren Buffett on Cash</p>
+        <p>Buffett focuses on "owner earnings" — operating cash flow adjusted for the capital expenditures required to keep the business healthy. His logic: the income statement and balance sheet are riddled with the art of finance. <strong>Cash is the number least affected by accounting assumptions.</strong> It is the closest approximation of economic reality.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── RATIOS ── -->
+    <section class="section-anchor" id="ratios">
+      <p class="section-eyebrow">Part Five</p>
+      <h2 class="section-title">Ratios — What the Numbers Are Really Telling You</h2>
+      <div class="prose">
+        <p>Raw financial numbers tell you very little without a point of comparison. Ratios are that point of comparison. Is a $10 million net profit good or bad? It depends on the company's size, industry, history, and competition. The only meaningful answer is, as the book puts it: <em>"Compared to what?"</em></p>
+        <p>Ratios should be tracked over time and compared to industry peers. A number by itself is a data point. A trend is a story.</p>
+      </div>
+
+      <h3 class="prose-h3" style="margin-top: 28px;">Profitability Ratios</h3>
+      <table class="ratio-table">
+        <thead>
+          <tr>
+            <th>Ratio</th>
+            <th>Formula</th>
+            <th>What It Reveals</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="ratio-name">Gross Margin</span></td>
+            <td><span class="ratio-formula">Gross Profit / Revenue</span></td>
+            <td>Profit remaining after direct cost of what you sell. Shows core product profitability.</td>
+          </tr>
+          <tr>
+            <td><span class="ratio-name">Net Profit Margin</span></td>
+            <td><span class="ratio-formula">Net Profit / Revenue</span></td>
+            <td>What's left after everything. Best compared within the same industry.</td>
+          </tr>
+          <tr>
+            <td><span class="ratio-name">Return on Assets (ROA)</span></td>
+            <td><span class="ratio-formula">Net Income / Total Assets</span></td>
+            <td>How efficiently the company uses its asset base. Can be too high if the company is underinvesting in its future.</td>
+          </tr>
+          <tr>
+            <td><span class="ratio-name">Return on Equity (ROE)</span></td>
+            <td><span class="ratio-formula">Net Income / Shareholders' Equity</span></td>
+            <td>Return generated on investors' capital. Key metric for shareholders and investors.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="prose-h3">Leverage Ratios</h3>
+      <table class="ratio-table">
+        <thead>
+          <tr>
+            <th>Ratio</th>
+            <th>Formula</th>
+            <th>What It Reveals</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="ratio-name">Debt-to-Equity</span></td>
+            <td><span class="ratio-formula">Total Debt / Shareholders' Equity</span></td>
+            <td>How much debt exists for every dollar of equity. Bankers watch this closely when evaluating loans.</td>
+          </tr>
+          <tr>
+            <td><span class="ratio-name">Interest Coverage</span></td>
+            <td><span class="ratio-formula">EBIT / Interest Expense</span></td>
+            <td>How easily can the company make interest payments? A ratio approaching 1 is a serious warning sign.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="prose-h3">Liquidity Ratios</h3>
+      <table class="ratio-table">
+        <thead>
+          <tr>
+            <th>Ratio</th>
+            <th>Formula</th>
+            <th>What It Reveals</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="ratio-name">Current Ratio</span></td>
+            <td><span class="ratio-formula">Current Assets / Current Liabilities</span></td>
+            <td>Can the company cover its short-term obligations with its short-term assets?</td>
+          </tr>
+          <tr>
+            <td><span class="ratio-name">Quick Ratio</span></td>
+            <td><span class="ratio-formula">(Cash + Receivables) / Current Liabilities</span></td>
+            <td>Stricter version excluding inventory, since inventory may not convert to cash quickly.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="prose-h3">Efficiency Ratios</h3>
+      <table class="ratio-table">
+        <thead>
+          <tr>
+            <th>Ratio</th>
+            <th>Formula</th>
+            <th>What It Reveals</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="ratio-name">Days Sales Outstanding (DSO)</span></td>
+            <td><span class="ratio-formula">A/R / (Revenue ÷ 365)</span></td>
+            <td>How long to collect from customers. Rising DSO can indicate collection problems — or revenue manipulation (see: Sunbeam).</td>
+          </tr>
+          <tr>
+            <td><span class="ratio-name">Inventory Turnover</span></td>
+            <td><span class="ratio-formula">COGS / Average Inventory</span></td>
+            <td>How quickly inventory moves. Low turnover may signal obsolescence or weak demand.</td>
+          </tr>
+          <tr>
+            <td><span class="ratio-name">Days Inventory Outstanding (DIO)</span></td>
+            <td><span class="ratio-formula">Inventory / (COGS ÷ 365)</span></td>
+            <td>Average days inventory sits before being sold. Lower is generally better.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── ROI ── -->
+    <section class="section-anchor" id="roi">
+      <p class="section-eyebrow">Part Six</p>
+      <h2 class="section-title">Return on Investment</h2>
+      <div class="prose">
+        <p>ROI is used loosely in business to mean many things. In the practical managerial sense, calculating ROI on a capital expenditure requires a structured framework — and always involves the art of finance. No analysis is more reliable than the assumptions underneath it.</p>
+      </div>
+
+      <div class="takeaway-list" style="margin-top: 24px;">
+        <div class="takeaway-item" data-n="Step 1">
+          <div class="takeaway-title">Determine the Initial Cash Outlay</div>
+          <div class="takeaway-body">All costs required to bring the investment online, expressed as cash out the door — not as accounting expense. Includes installation, training, transition time, and any spillover costs into year two or three.</div>
+        </div>
+        <div class="takeaway-item" data-n="Step 2">
+          <div class="takeaway-title">Project Future Cash Flows</div>
+          <div class="takeaway-body">What cash inflows (or cost savings) will this investment generate, and over what period? This is deeply art-driven. Getting subject-matter experts (engineers, salespeople, operators) involved in building these assumptions is as important as the math itself.</div>
+        </div>
+        <div class="takeaway-item" data-n="Step 3">
+          <div class="takeaway-title">Apply an Evaluation Method</div>
+          <div class="takeaway-body"><strong>Payback Period</strong> — simplest; ignores time value of money. <strong>Net Present Value (NPV)</strong> — discounts future cash flows to today's dollars; if NPV &gt; 0, the investment is worth making. <strong>Internal Rate of Return (IRR)</strong> — the discount rate at which NPV = 0; if IRR exceeds the company's hurdle rate, proceed.</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── WORKING CAPITAL ── -->
+    <section class="section-anchor" id="working-capital">
+      <p class="section-eyebrow">Part Seven</p>
+      <h2 class="section-title">Working Capital Management</h2>
+      <div class="prose">
+        <p>Working capital = Current Assets − Current Liabilities (practically: cash + receivables + inventory − accounts payable). It is the fuel that keeps the operating cycle running — cash becomes inventory, inventory becomes receivables, receivables become cash again.</p>
+        <p>The key insight for non-financial managers: <strong>you have direct and powerful influence over three working capital accounts</strong>, even if you never look at a balance sheet.</p>
+      </div>
+
+      <div class="takeaway-list" style="margin-top: 24px;">
+        <div class="takeaway-item" data-n="A/R">
+          <div class="takeaway-title">Accounts Receivable</div>
+          <div class="takeaway-body">Every day payment is delayed, the company is effectively lending that money to the customer interest-free. Managers can shorten the cash conversion cycle by tightening credit terms, improving invoicing speed, and following up aggressively on collections.</div>
+        </div>
+        <div class="takeaway-item" data-n="INV">
+          <div class="takeaway-title">Inventory</div>
+          <div class="takeaway-body">Excess inventory ties up cash and creates risk (obsolescence, damage). Lean manufacturing and just-in-time supply chains are fundamentally working capital optimization strategies. Reducing inventory directly improves cash flow without affecting profit.</div>
+        </div>
+        <div class="takeaway-item" data-n="A/P">
+          <div class="takeaway-title">Accounts Payable</div>
+          <div class="takeaway-body">Paying suppliers too quickly is giving them an interest-free loan. Stretching payment terms (within reasonable limits) preserves cash. However, doing this aggressively can damage supplier relationships or signal financial distress.</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">The Cash Conversion Cycle</p>
+        <p>Cash Conversion Cycle = <strong>DIO + DSO − Days Payable Outstanding.</strong> A shorter cycle means the business generates cash faster from its operations. This is why Amazon, with its negative cash conversion cycle (it collects from customers before it pays suppliers), has always generated exceptional cash flow even at modest profit margins.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── TRANSPARENCY ── -->
+    <section class="section-anchor" id="transparency">
+      <p class="section-eyebrow">Part Eight</p>
+      <h2 class="section-title">Financial Transparency as Organizational Strategy</h2>
+      <div class="prose">
+        <p>The final section zooms out from individual skill-building to organizational strategy. The core argument: when more employees understand the financials, organizations perform measurably better.</p>
+        <p>Research cited in the book (Center for Effective Organizations) found that training employees in financial literacy was positively correlated simultaneously with productivity, customer satisfaction, quality, speed, profitability, and employee engagement. The mechanism is straightforward: when frontline employees understand <em>why</em> the company changed its commission structure (because cash was being drained by acquisitions), they adapt instead of resisting. When they understand why a KPI shifted this quarter (because the financial situation changed), they trust leadership instead of suspecting arbitrary management.</p>
+        <p>The authors point to Set-point Systems, co-owned by Joe Knight, as a live example of this working in practice — a company where employees at every level understand the financials and demonstrate what the authors call <strong>"psychic ownership"</strong> in the outcomes.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">The Ultimate Goal</p>
+        <p>Financial information is the nervous system of any business. For too long, a relative handful of people in each company were the only ones who understood what it was telling them. <strong>There is a simple antidote to organizational politics: sunlight, transparency, and open communication.</strong> In the long run, an organization built on trust and a shared sense of purpose will always outperform its less open counterparts.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── KEY TAKEAWAYS ── -->
+    <section class="section-anchor" id="takeaways">
+      <p class="section-eyebrow">Synthesis</p>
+      <h2 class="section-title">The Most Durable Takeaways</h2>
+
+      <div class="takeaway-list">
+        <div class="takeaway-item" data-n="01">
+          <div class="takeaway-title">Finance is a tool, not a gate</div>
+          <div class="takeaway-body">The reason non-financial managers feel locked out of financial conversations is not that the concepts are inherently complex — it's that the language was never explained. Once you understand that an income statement is just a structured summary of revenues minus costs, and that the numbers within it are estimates shaped by human judgment, the intimidation evaporates.</div>
+        </div>
+        <div class="takeaway-item" data-n="02">
+          <div class="takeaway-title">Profit and cash are different animals</div>
+          <div class="takeaway-body">A company can report strong profits while running out of cash. Understanding why — accrual accounting, timing of collections and payments, capital expenditures — is essential for any manager making resource decisions. This is the single most important practical insight in the book.</div>
+        </div>
+        <div class="takeaway-item" data-n="03">
+          <div class="takeaway-title">Ratios are a second language</div>
+          <div class="takeaway-body">The numbers on financial statements tell you what happened. Ratios tell you what it means. Tracking them over time and against industry peers is what separates passive consumers of financial information from active interpreters of it.</div>
+        </div>
+        <div class="takeaway-item" data-n="04">
+          <div class="takeaway-title">Every manager influences the financials</div>
+          <div class="takeaway-body">You don't need to work in finance to affect the income statement and balance sheet. Every decision about pricing, hiring, purchasing, inventory, and collections ripples through the financial statements. Financial intelligence makes those ripples visible — and intentional.</div>
+        </div>
+        <div class="takeaway-item" data-n="05">
+          <div class="takeaway-title">Transparency compounds over time</div>
+          <div class="takeaway-body">Organizations that build financial literacy broadly end up with more trust, lower turnover, better alignment, and stronger performance than those that keep financial information siloed. It is a cultural investment with measurable organizational returns.</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── CRITIQUE ── -->
+    <section class="section-anchor" id="critique">
+      <p class="section-eyebrow">Honest Assessment</p>
+      <h2 class="section-title">Where the Book Has Limits</h2>
+
+      <div class="critique-card">
+        <p class="critique-label">Depth on Analytical Tools</p>
+        <p>The sections on NPV and IRR are conceptually accurate but relatively brief. A manager who needs to build or defend a capital expenditure proposal in a sophisticated corporate environment will likely need supplementary material to handle the full complexity of modeling future cash flows, sensitivity analysis, and discount rate selection.</p>
+      </div>
+
+      <div class="critique-card">
+        <p class="critique-label">Pre-dates Modern Financial Engineering</p>
+        <p>The book was published in 2006 and predates much of the modern conversation around non-GAAP metrics, EBITDA adjustments, and the kinds of aggressive financial engineering that became common in the decade following publication. Readers navigating today's public company earnings landscape will encounter practices the book doesn't address.</p>
+      </div>
+
+      <div class="critique-card">
+        <p class="critique-label">Limited on Structural Incentives for Manipulation</p>
+        <p>The book uses real corporate examples (Enron, Tyco, Sunbeam, Adelphia) to illustrate fraudulent or aggressive accounting, but doesn't spend much time on the structural incentives that create pressure to manipulate numbers in the first place — executive compensation tied to earnings, analyst expectations, short-termism. Understanding those incentives can be as valuable as understanding the accounting itself.</p>
+      </div>
+
+      <div class="prose" style="margin-top: 24px;">
+        <p>These limitations are real but narrow. As an entry point for non-financial managers, <em>Financial Intelligence</em> remains one of the clearest and most practically grounded treatments of the subject available. The core framework — learn the statements, understand the art, use ratios, watch the cash — holds up entirely.</p>
+      </div>
+    </section>
+
+    <div style="margin-top: 52px;">
+      <a class="back-btn" href="index.html">← Back to Library</a>
+    </div>
+
+  </div><!-- end content-wrap -->
+
+  <footer>
+    <p>Part of the Personal Reading Room library.</p>
+    <span class="footer-mono">financial-intelligence.html</span>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Reading Room — Book Analysis Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:       #0F1B2D;
+      --navy-mid:   #1A2E47;
+      --gold:       #C8A84B;
+      --gold-light: #E8C96A;
+      --cream:      #F7F4EE;
+      --cream-dark: #EDE9E1;
+      --divider:    #D9D4CA;
+      --slate:      #4A5568;
+      --slate-light:#718096;
+      --text:       #1A1A1A;
+
+      /* Book spine accent colors — one per book */
+      --spine-1: #2C5F8A;   /* Financial Intelligence — steel blue */
+      --spine-2: #7B3F00;   /* Five Dysfunctions      — mahogany  */
+      --spine-3: #1B5E20;   /* Good to Great          — forest    */
+      --spine-4: #4A1A6B;   /* Crucial Conversations   — plum      */
+      --spine-5: #8B2500;   /* How to Win Friends     — burnt red  */
+      --spine-6: #1A4A4A;   /* Project Management     — teal       */
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background-color: var(--navy);
+      padding: 56px 40px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+    }
+
+    header::after {
+      content: '"';
+      font-family: 'Playfair Display', serif;
+      font-size: 320px;
+      line-height: 1;
+      color: rgba(255,255,255,0.03);
+      position: absolute;
+      right: -20px;
+      top: -40px;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 700;
+      color: #FFFFFF;
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+
+    header p {
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.60);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    /* ── SHELF BAR ── */
+    .shelf-bar {
+      background-color: var(--navy-mid);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0 40px;
+    }
+
+    .shelf-bar-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      height: 48px;
+    }
+
+    .shelf-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.1em;
+    }
+
+    .shelf-divider {
+      width: 1px;
+      height: 16px;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .shelf-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.40);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 3px 10px;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 52px 40px 80px;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--slate-light);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--divider);
+    }
+
+    /* ── BOOK GRID ── */
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    /* ── BOOK CARD ── */
+    .book-card {
+      background: #FFFFFF;
+      border: 1px solid var(--divider);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .book-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(15,27,45,0.12);
+      border-color: #C0BAB0;
+    }
+
+    .book-card.coming-soon {
+      opacity: 0.52;
+      pointer-events: none;
+      cursor: default;
+    }
+
+    /* The spine — the signature element */
+    .book-spine {
+      width: 6px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      flex-shrink: 0;
+    }
+
+    .book-card-body {
+      padding: 24px 24px 20px 32px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .book-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .book-category {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--slate-light);
+    }
+
+    .book-status {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+
+    .status-complete {
+      color: #276749;
+      background: #E6F4ED;
+    }
+
+    .status-pending {
+      color: #7B5A00;
+      background: #FEF3C7;
+    }
+
+    .book-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.25;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .book-author {
+      font-size: 0.82rem;
+      color: var(--slate-light);
+      font-style: italic;
+      margin-bottom: 14px;
+    }
+
+    .book-desc {
+      font-size: 0.875rem;
+      color: var(--slate);
+      line-height: 1.65;
+      flex: 1;
+      margin-bottom: 20px;
+    }
+
+    .book-footer {
+      border-top: 1px solid var(--cream-dark);
+      padding: 14px 24px 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .book-topics {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .topic-chip {
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      color: var(--slate-light);
+      background: var(--cream);
+      border: 1px solid var(--divider);
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+
+    .book-cta {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gold);
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+
+    .book-card:hover .book-cta {
+      color: var(--gold-light);
+    }
+
+    .book-cta-disabled {
+      color: var(--divider);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--divider);
+      padding: 28px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: var(--slate-light);
+    }
+
+    footer .footer-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--divider);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      header { padding: 40px 24px 36px; }
+      .shelf-bar { padding: 0 24px; }
+      main { padding: 40px 24px 60px; }
+      .book-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 10px; padding: 24px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .book-card { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <p class="header-label">Personal Reading Room</p>
+      <h1>The Book Analysis<br>Library</h1>
+      <p>In-depth breakdowns of essential business, leadership, and management texts — with a focus on practical application and cross-disciplinary translation.</p>
+    </div>
+  </header>
+
+  <div class="shelf-bar">
+    <div class="shelf-bar-inner">
+      <span class="shelf-count">6 volumes catalogued</span>
+      <div class="shelf-divider"></div>
+      <div class="shelf-tags">
+        <span class="tag">Leadership</span>
+        <span class="tag">Finance</span>
+        <span class="tag">Management</span>
+        <span class="tag">Communication</span>
+        <span class="tag">Strategy</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <p class="section-label">Analyses</p>
+
+    <div class="book-grid">
+
+      <!-- ① Financial Intelligence — COMPLETE -->
+      <a class="book-card" href="financial-intelligence.html">
+        <div class="book-spine" style="background:var(--spine-1);"></div>
+        <div class="book-card-body">
+          <div class="book-meta">
+            <span class="book-category">Finance</span>
+            <span class="book-status status-complete">Complete</span>
+          </div>
+          <h2 class="book-title">Financial Intelligence</h2>
+          <p class="book-author">Karen Berman &amp; Joe Knight</p>
+          <p class="book-desc">A practical guide to reading financial statements, understanding the art embedded in accounting, and using ratios, cash flow, and ROI to make better decisions — even if you've never worked in finance.</p>
+        </div>
+        <div class="book-footer">
+          <div class="book-topics">
+            <span class="topic-chip">Income Statement</span>
+            <span class="topic-chip">Cash Flow</span>
+            <span class="topic-chip">Ratios</span>
+            <span class="topic-chip">ROI</span>
+          </div>
+          <span class="book-cta">Read →</span>
+        </div>
+      </a>
+
+      <!-- ② Five Dysfunctions — COMING SOON (summary already in context, can be completed) -->
+      <a class="book-card coming-soon" href="five-dysfunctions.html">
+        <div class="book-spine" style="background:var(--spine-2);"></div>
+        <div class="book-card-body">
+          <div class="book-meta">
+            <span class="book-category">Leadership</span>
+            <span class="book-status status-pending">Pending</span>
+          </div>
+          <h2 class="book-title">The Five Dysfunctions of a Team</h2>
+          <p class="book-author">Patrick Lencioni</p>
+          <p class="book-desc">A leadership fable tracing how a Silicon Valley team's interpersonal failures — from absent trust to inattention to results — undermine even the most talented organizations.</p>
+        </div>
+        <div class="book-footer">
+          <div class="book-topics">
+            <span class="topic-chip">Trust</span>
+            <span class="topic-chip">Conflict</span>
+            <span class="topic-chip">Accountability</span>
+          </div>
+          <span class="book-cta book-cta-disabled">Coming Soon</span>
+        </div>
+      </a>
+
+      <!-- ③ Good to Great -->
+      <a class="book-card coming-soon" href="good-to-great.html">
+        <div class="book-spine" style="background:var(--spine-3);"></div>
+        <div class="book-card-body">
+          <div class="book-meta">
+            <span class="book-category">Strategy</span>
+            <span class="book-status status-pending">Pending</span>
+          </div>
+          <h2 class="book-title">Good to Great</h2>
+          <p class="book-author">Jim Collins</p>
+          <p class="book-desc">A research-driven examination of what distinguishes companies that made a sustained leap to greatness from those that did not — covering Level 5 leadership, the Hedgehog Concept, and the Flywheel.</p>
+        </div>
+        <div class="book-footer">
+          <div class="book-topics">
+            <span class="topic-chip">Hedgehog Concept</span>
+            <span class="topic-chip">Level 5 Leadership</span>
+            <span class="topic-chip">Flywheel</span>
+          </div>
+          <span class="book-cta book-cta-disabled">Coming Soon</span>
+        </div>
+      </a>
+
+      <!-- ④ Crucial Conversations -->
+      <a class="book-card coming-soon" href="crucial-conversations.html">
+        <div class="book-spine" style="background:var(--spine-4);"></div>
+        <div class="book-card-body">
+          <div class="book-meta">
+            <span class="book-category">Communication</span>
+            <span class="book-status status-pending">Pending</span>
+          </div>
+          <h2 class="book-title">Crucial Conversations</h2>
+          <p class="book-author">Grenny, Patterson, McMillan, Switzler &amp; Gregory</p>
+          <p class="book-desc">A framework for navigating high-stakes conversations where emotions run high and the outcomes matter — covering safety, the Pool of Shared Meaning, and how to stay in dialogue under pressure.</p>
+        </div>
+        <div class="book-footer">
+          <div class="book-topics">
+            <span class="topic-chip">Dialogue</span>
+            <span class="topic-chip">Safety</span>
+            <span class="topic-chip">High Stakes</span>
+          </div>
+          <span class="book-cta book-cta-disabled">Coming Soon</span>
+        </div>
+      </a>
+
+      <!-- ⑤ How to Win Friends -->
+      <a class="book-card coming-soon" href="how-to-win-friends.html">
+        <div class="book-spine" style="background:var(--spine-5);"></div>
+        <div class="book-card-body">
+          <div class="book-meta">
+            <span class="book-category">Influence</span>
+            <span class="book-status status-pending">Pending</span>
+          </div>
+          <h2 class="book-title">How to Win Friends and Influence People</h2>
+          <p class="book-author">Dale Carnegie</p>
+          <p class="book-desc">The foundational text on human relations and persuasion — still essential for anyone navigating peer influence, organizational politics, and the shift from positional authority to earned credibility.</p>
+        </div>
+        <div class="book-footer">
+          <div class="book-topics">
+            <span class="topic-chip">Influence</span>
+            <span class="topic-chip">Persuasion</span>
+            <span class="topic-chip">Relationships</span>
+          </div>
+          <span class="book-cta book-cta-disabled">Coming Soon</span>
+        </div>
+      </a>
+
+      <!-- ⑥ Project Management -->
+      <a class="book-card coming-soon" href="project-management.html">
+        <div class="book-spine" style="background:var(--spine-6);"></div>
+        <div class="book-card-body">
+          <div class="book-meta">
+            <span class="book-category">Management</span>
+            <span class="book-status status-pending">Pending</span>
+          </div>
+          <h2 class="book-title">Fundamentals of Project Management</h2>
+          <p class="book-author">Joseph Heagney</p>
+          <p class="book-desc">A practical, process-driven reference covering scope, schedule, cost, risk, and stakeholder management — with direct application to cross-functional corporate project leadership.</p>
+        </div>
+        <div class="book-footer">
+          <div class="book-topics">
+            <span class="topic-chip">Scope</span>
+            <span class="topic-chip">Schedule</span>
+            <span class="topic-chip">Risk</span>
+            <span class="topic-chip">Stakeholders</span>
+          </div>
+          <span class="book-cta book-cta-disabled">Coming Soon</span>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>Personal reading library — updated as analyses are completed.</p>
+    <span class="footer-mono">index.html</span>
+  </footer>
+
+</body>
+</html>
