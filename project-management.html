@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fundamentals of Project Management — Book Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #0F1B2D;
+      --navy-mid:    #1A2E47;
+      --spine:       #1A4A4A;
+      --spine-light: #2A7070;
+      --gold:        #C8A84B;
+      --gold-light:  #E8C96A;
+      --cream:       #F7F4EE;
+      --cream-dark:  #EDE9E1;
+      --divider:     #D9D4CA;
+      --slate:       #4A5568;
+      --slate-light: #718096;
+      --text:        #1A1A1A;
+      --green:       #276749;
+      --green-bg:    #E6F4ED;
+      --amber:       #92400E;
+      --amber-bg:    #FFFBEB;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── NAV BREADCRUMB ── */
+    .breadcrumb {
+      background: var(--navy);
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .breadcrumb a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .breadcrumb a:hover { color: var(--gold); }
+    .breadcrumb-sep { font-size: 12px; color: rgba(255,255,255,0.2); }
+    .breadcrumb-current {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.70);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background-color: var(--navy);
+      padding: 52px 40px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--spine);
+    }
+    .hero-spine-glow {
+      position: absolute;
+      top: 0; left: 0;
+      width: 440px;
+      height: 100%;
+      background: radial-gradient(ellipse at 0% 50%, rgba(26,74,74,0.28) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--spine-light);
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 4.2vw, 3.1rem);
+      font-weight: 700;
+      color: #FFFFFF;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+    .hero-author {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.50);
+      margin-bottom: 28px;
+    }
+    .hero-meta-row {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .hero-meta-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.30);
+    }
+    .hero-meta-value {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* ── TOC BAR ── */
+    .toc-bar {
+      background: var(--navy-mid);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0 40px;
+      overflow-x: auto;
+    }
+    .toc-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0;
+    }
+    .toc-link {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.40);
+      text-decoration: none;
+      padding: 14px 16px;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .toc-link:hover {
+      color: rgba(255,255,255,0.80);
+      border-bottom-color: var(--spine-light);
+    }
+
+    /* ── CONTENT ── */
+    .content-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 56px 40px 80px;
+    }
+
+    .section-anchor { padding-top: 20px; }
+
+    .section-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--spine-light);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    /* ── PROSE ── */
+    .prose { font-size: 0.9625rem; line-height: 1.78; color: var(--slate); }
+    .prose p { margin-bottom: 18px; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: var(--navy); font-weight: 600; }
+    .prose em { font-style: italic; color: var(--slate); }
+    .prose-h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin: 32px 0 12px;
+    }
+
+    /* ── CALLOUT ── */
+    .callout {
+      background: #FFFFFF;
+      border-left: 4px solid var(--spine);
+      border-radius: 0 4px 4px 0;
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .callout-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--spine-light);
+      margin-bottom: 8px;
+    }
+    .callout p {
+      font-size: 0.925rem;
+      line-height: 1.70;
+      color: var(--navy);
+      margin: 0;
+    }
+
+    /* ── WARNING / CRITICAL CALLOUT ── */
+    .callout-warn {
+      background: #FFF8F0;
+      border-left: 4px solid #C05621;
+      border-radius: 0 4px 4px 0;
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .callout-warn .callout-label { color: #C05621; }
+    .callout-warn p {
+      font-size: 0.925rem;
+      line-height: 1.70;
+      color: #5C3317;
+      margin: 0;
+    }
+
+    /* ── GOLD CALLOUT ── */
+    .callout-gold {
+      background: var(--amber-bg);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 4px 4px 0;
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .callout-gold .callout-label { color: var(--amber); }
+    .callout-gold p {
+      font-size: 0.925rem;
+      line-height: 1.70;
+      color: var(--amber);
+      margin: 0;
+    }
+
+    /* ── STEP LIST ── */
+    .step-list { display: flex; flex-direction: column; gap: 14px; margin: 24px 0; }
+    .step-item {
+      background: #FFFFFF;
+      border: 1px solid var(--divider);
+      border-radius: 4px;
+      padding: 16px 20px 16px 56px;
+      position: relative;
+    }
+    .step-item::before {
+      content: attr(data-n);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--spine-light);
+      position: absolute;
+      left: 18px;
+      top: 18px;
+    }
+    .step-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .step-body {
+      font-size: 0.875rem;
+      line-height: 1.65;
+      color: var(--slate);
+    }
+
+    /* ── PHASE TABLE ── */
+    .phase-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 0.875rem;
+    }
+    .phase-table th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--slate-light);
+      text-align: left;
+      padding: 10px 16px;
+      background: var(--cream-dark);
+      border-bottom: 1px solid var(--divider);
+    }
+    .phase-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--cream-dark);
+      vertical-align: top;
+      color: var(--slate);
+      line-height: 1.55;
+    }
+    .phase-table tr:last-child td { border-bottom: none; }
+    .phase-table tr:hover td { background: #FFFFFF; }
+    .phase-name { font-weight: 600; color: var(--navy); white-space: nowrap; }
+    .phase-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--spine-light);
+    }
+
+    /* ── LEADERSHIP STYLE GRID ── */
+    .style-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
+      gap: 14px;
+      margin: 24px 0;
+    }
+    .style-card {
+      background: #FFFFFF;
+      border: 1px solid var(--divider);
+      border-top: 3px solid var(--spine);
+      border-radius: 4px;
+      padding: 16px 18px;
+    }
+    .style-stage {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--spine-light);
+      margin-bottom: 6px;
+    }
+    .style-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .style-desc {
+      font-size: 0.82rem;
+      color: var(--slate);
+      line-height: 1.55;
+    }
+
+    /* ── CRITIQUE CARD ── */
+    .critique-card {
+      background: #FFF9F0;
+      border: 1px solid #F0E0C0;
+      border-left: 4px solid var(--gold);
+      border-radius: 0 4px 4px 0;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+    .critique-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .critique-card p {
+      font-size: 0.9rem;
+      line-height: 1.70;
+      color: #5C4A20;
+      margin: 0;
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--divider);
+      margin: 52px 0 48px;
+    }
+
+    /* ── BACK BUTTON ── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--slate-light);
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color 0.15s;
+    }
+    .back-btn:hover { color: var(--navy); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--divider);
+      padding: 28px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    footer p { font-size: 12px; color: var(--slate-light); }
+    .footer-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--divider);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .breadcrumb { padding: 12px 20px; }
+      .hero { padding: 36px 24px 36px; }
+      .toc-bar { padding: 0 20px; }
+      .content-wrap { padding: 36px 24px 60px; }
+      .phase-table { font-size: 0.82rem; }
+      .phase-table th, .phase-table td { padding: 10px 12px; }
+      .style-grid { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; gap: 10px; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="index.html">Library</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current">Fundamentals of Project Management</span>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-spine-glow"></div>
+    <div class="hero-inner">
+      <p class="hero-label">Book Analysis — Management</p>
+      <h1>Fundamentals of<br>Project Management</h1>
+      <p class="hero-author">Joseph Heagney — 6th Edition</p>
+      <div class="hero-meta-row">
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Publisher</span>
+          <span class="hero-meta-value">AMACOM / HarperCollins Leadership</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Edition</span>
+          <span class="hero-meta-value">6th (2022)</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Certification Standard</span>
+          <span class="hero-meta-value">PMI PMBOK® Guide, 7th Ed.</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Audience</span>
+          <span class="hero-meta-value">New &amp; accidental project managers</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- TOC Bar -->
+  <nav class="toc-bar" aria-label="Page sections">
+    <div class="toc-inner">
+      <a class="toc-link" href="#overview">Overview</a>
+      <a class="toc-link" href="#pcts">PCTS &amp; Lifecycle</a>
+      <a class="toc-link" href="#pm-role">The PM Role</a>
+      <a class="toc-link" href="#planning">Planning</a>
+      <a class="toc-link" href="#wbs">WBS &amp; Scheduling</a>
+      <a class="toc-link" href="#risk">Risk &amp; Communication</a>
+      <a class="toc-link" href="#control">Control &amp; Earned Value</a>
+      <a class="toc-link" href="#change">Change Control</a>
+      <a class="toc-link" href="#teams">Teams &amp; Leadership</a>
+      <a class="toc-link" href="#closure">Closeout</a>
+      <a class="toc-link" href="#recovery">Recovery</a>
+      <a class="toc-link" href="#takeaways">Key Takeaways</a>
+      <a class="toc-link" href="#critique">Critique</a>
+    </div>
+  </nav>
+
+  <div class="content-wrap">
+    <a class="back-btn" href="index.html">← Back to Library</a>
+
+    <!-- ── OVERVIEW ── -->
+    <section class="section-anchor" id="overview">
+      <p class="section-eyebrow">What This Book Is</p>
+      <h2 class="section-title">Overview &amp; Core Argument</h2>
+      <div class="prose">
+        <p><em>Fundamentals of Project Management</em> is the practitioner's entry point into the discipline — a structured, no-nonsense guide for people who have been handed a project to manage, often without formal training, and need a reliable framework to deliver it. Heagney spent 35+ years as a project manager, trainer, and consultant, and the book carries that accumulated scar tissue. It is grounded in PMI's evolving <em>PMBOK® Guide</em> (7th edition for this printing), while remaining accessible to beginners and usable as a reference for veterans.</p>
+        <p>The book's central argument is that <strong>most projects fail not at the end but at the beginning</strong> — during definition and planning. The remedy is not more software, more meetings, or more reporting. It is disciplined planning, rigorous problem definition, and recognizing that project management is fundamentally a <strong>people discipline</strong>, not a technical one.</p>
+        <p>PMI's own "Pulse of the Profession" 2021 data bears this out: 70% of projects fail to fully deliver on their promises, and the most consistent driver of the organizations that beat those odds is not superior tools — it is standardized processes and what PMI calls "gymnastic enterprises": organizations that flex, pivot, and plan rigorously while maintaining structure and governance.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">Juran's Definition</p>
+        <p>Quality guru J.M. Juran defined a project as <strong>"a problem scheduled for solution."</strong> Heagney returns to this throughout the book. Every project exists to solve a problem — positive or negative — and the way you define that problem determines how you will solve it. Define it wrong, and you may produce an excellent solution to the wrong problem.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── PCTS & LIFECYCLE ── -->
+    <section class="section-anchor" id="pcts">
+      <p class="section-eyebrow">Chapter 1</p>
+      <h2 class="section-title">The PCTS Targets &amp; Project Life Cycle</h2>
+      <div class="prose">
+        <p>Every project is constrained by four variables. Heagney calls these the <strong>PCTS targets</strong>: Performance, Cost, Time, and Scope. The critical nuance — and a frequent source of project failure — is that only three of these can have values assigned up front. The fourth must be determined as a function of the other three. The team that doesn't understand this will promise all four and then fail to deliver any of them.</p>
+      </div>
+
+      <table class="phase-table" style="margin-top: 20px;">
+        <thead>
+          <tr>
+            <th>Constraint</th>
+            <th>What It Means</th>
+            <th>The Trade-off</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="phase-name">Performance</span></td>
+            <td>The quality standard and technical specifications the deliverable must meet.</td>
+            <td>Reduce performance to save cost or time — but must be negotiated with the customer.</td>
+          </tr>
+          <tr>
+            <td><span class="phase-name">Cost</span></td>
+            <td>The budget available for the project.</td>
+            <td>Adding resources costs money; cutting budget usually extends time or reduces scope.</td>
+          </tr>
+          <tr>
+            <td><span class="phase-name">Time</span></td>
+            <td>The deadline — when the deliverable must be ready.</td>
+            <td>Compressing time typically requires more resources (cost) or reduced scope.</td>
+          </tr>
+          <tr>
+            <td><span class="phase-name">Scope</span></td>
+            <td>The magnitude of the work — what is included and what is not.</td>
+            <td>Expanding scope without adjusting cost or time is the definition of scope creep.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="prose-h3">The Project Life Cycle</h3>
+      <div class="prose">
+        <p>Heagney presents a six-phase life cycle. The critical observation is the "troubled project" life cycle that most teams actually follow: they skip or rush through definition and planning, then spend the back half of the project in panic mode — reworking, fighting stakeholders, and backing out of blind alleys. The appropriate cycle inverts this by front-loading rigor.</p>
+      </div>
+
+      <table class="phase-table">
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Key Activities</th>
+            <th>Common Failure Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="phase-name">Concept</span></td>
+            <td>Identify the need; high-level feasibility; initial stakeholder identification.</td>
+            <td>Too vague — "fuzzy" ideas proceed to execution without formalization.</td>
+          </tr>
+          <tr>
+            <td><span class="phase-name">Definition</span></td>
+            <td>Write the problem statement and mission statement; define scope; get alignment.</td>
+            <td><em>Most projects fail here.</em> Teams skip definition and assume alignment that doesn't exist.</td>
+          </tr>
+          <tr>
+            <td><span class="phase-name">Planning</span></td>
+            <td>WBS, schedule, budget, risk plan, communication plan; team sign-off.</td>
+            <td>Ready-fire-aim mentality — jumping to execution before the plan is complete.</td>
+          </tr>
+          <tr>
+            <td><span class="phase-name">Execution</span></td>
+            <td>Do the work; manage resources; run status meetings; track actuals vs. plan.</td>
+            <td>Working project manager trap — PM does technical work instead of managing.</td>
+          </tr>
+          <tr>
+            <td><span class="phase-name">Control</span></td>
+            <td>Compare actuals to baseline; take corrective action; manage changes formally.</td>
+            <td>Monitoring without acting — detecting variance but taking no corrective action.</td>
+          </tr>
+          <tr>
+            <td><span class="phase-name">Closeout</span></td>
+            <td>Lessons-learned analysis; closure checklist; administrative &amp; contractual close; celebrate.</td>
+            <td>Rushed or skipped — leaving the organization with no institutional learning.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── THE PM ROLE ── -->
+    <section class="section-anchor" id="pm-role">
+      <p class="section-eyebrow">Chapter 2</p>
+      <h2 class="section-title">The Role of the Project Manager</h2>
+      <div class="prose">
+        <p>The most misunderstood aspect of the project manager's job is that it is not a technical role. Because most PMs arrive at the position as a natural progression from engineering, programming, or science roles, both they and their organizations treat the job as an extension of technical work. This sets them up to fail.</p>
+        <p><strong>The primary responsibility of the project manager is to ensure that all work is completed on time, within budget and scope, and at the correct performance level.</strong> That is — the PM is responsible for PCTS. Not for doing the technical work. Not for solving the engineering problems. For managing the conditions under which other people can solve those problems.</p>
+
+        <h3 class="prose-h3">The Working Project Manager Trap</h3>
+        <p>One of the most destructive patterns Heagney documents is the "working project manager" — someone who is responsible for managing the project <em>and</em> performing technical work. When a conflict arises between the two (and it always does), the technical work wins. When performance review time comes, the PM is told the technical work was acceptable but the project management was inadequate. This is a structural double-bind that should not exist.</p>
+
+        <h3 class="prose-h3">Authority — The Universal Complaint</h3>
+        <p>Every project manager complains about having a great deal of responsibility and no authority. Heagney's response: <strong>you have as much authority as you are willing to take.</strong> Rather than constantly seeking permission, make decisions that are within the scope of the approved plan, take appropriate action, and inform your boss afterward. Senior managers almost universally wish their people would bring solutions rather than problems and would stop escalating every decision.</p>
+
+        <h3 class="prose-h3">The Inverted Triangle — Jan Carlzon's Model</h3>
+        <p>Heagney draws on Jan Carlzon (youngest-ever CEO of Scandinavian Airlines, who turned the airline around by empowering frontline employees) to define the project manager's role. The traditional org chart places authority at the apex. Carlzon inverted the triangle: the job of every manager is to make it possible for the frontline to do their work without having to ask permission for every action. The project manager is not a project czar — she is an <strong>enabler of the team</strong>.</p>
+
+        <h3 class="prose-h3">Leadership vs. Management</h3>
+        <p>Heagney insists both skills are required and neither is sufficient alone. Management covers the administrative components: budgets, schedules, logistics, contracts. Leadership — citing Vance Packard's definition — is <strong>"the art of getting others to want to do something that you believe should be done."</strong> The operative word is <em>want</em>. Dictators get people to do things. Leaders get people to <em>want</em> to do them. The difference determines what happens when the leader's back is turned.</p>
+      </div>
+
+      <div class="callout-warn">
+        <p class="callout-label">Attributes in Priority Order</p>
+        <p>When asked for the most important attributes of a project manager, Heagney answers: <strong>people skills are numbers one through three. Everything else comes after that.</strong> If you can deal with people, you can learn or delegate everything else. Being able to do everything else without being good with people will not cut it.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── PLANNING ── -->
+    <section class="section-anchor" id="planning">
+      <p class="section-eyebrow">Chapter 3 &amp; 5</p>
+      <h2 class="section-title">Planning the Project</h2>
+      <div class="prose">
+        <p>Almost every study of project failure identifies poor planning as the primary cause. Heagney is emphatic: <strong>if you have no plan, you have no control.</strong> The ready-fire-aim mentality — jumping to execution in order to appear productive — consistently produces more total work, not less. The time and cost of reworking errors, soothing unhappy stakeholders, and recovering from poor definitions always exceeds what proper planning would have cost.</p>
+        <p>Two forces work against good planning: prevailing paradigms ("we don't have time to plan") and human nature (we want to feel like we're doing something). Both must be consciously overcome.</p>
+
+        <h3 class="prose-h3">The First Rule of Project Management</h3>
+        <p><strong>The people who must do the work should help plan it.</strong> Managers who plan projects for their teams get plans full of holes with inaccurate estimates and zero buy-in. The plan falls apart after work begins, because nobody who actually knows the work helped build it.</p>
+
+        <h3 class="prose-h3">Problem Statement → Mission Statement → Objectives</h3>
+        <p>A project begins with defining the problem — the gap between where you are and where you want to be, with obstacles in the way. The problem statement precedes all other planning. A goal without obstacles is not a problem; it's just a wish. The mission statement flows from the problem statement and answers two questions: <em>What are we going to do?</em> and <em>For whom are we going to do it?</em></p>
+        <p>Objectives must be <strong>SMART</strong>: Specific, Measurable, Assignable, Realistic, and Time-bound. This is the bridge between the mission statement and the actual work.</p>
+      </div>
+
+      <div class="step-list">
+        <div class="step-item" data-n="01">
+          <div class="step-title">Define the Problem</div>
+          <div class="step-body">Write a formal problem statement. Identify the gap between current state and desired state, and name the obstacles. This step is so often skipped that Heagney believes we have a "defective gene" preventing us from demanding a good problem definition before starting work.</div>
+        </div>
+        <div class="step-item" data-n="02">
+          <div class="step-title">Develop Mission &amp; Objectives</div>
+          <div class="step-body">Write a mission statement (what + for whom). Then develop SMART objectives that translate the mission into measurable outcomes. Validate these with the actual customer — not by presenting your draft, but by asking open-ended questions to confirm alignment.</div>
+        </div>
+        <div class="step-item" data-n="03">
+          <div class="step-title">Define Strategy, Scope, and Tactics</div>
+          <div class="step-body">Strategy is the overall approach. Scope defines the boundaries — what will and will not be done. Tactics are specific actions. All three must be documented before planning tools are applied. Scope definition is the primary defense against scope creep later.</div>
+        </div>
+        <div class="step-item" data-n="04">
+          <div class="step-title">Develop the WBS</div>
+          <div class="step-body">Build the Work Breakdown Structure with the team. The WBS is the device that ties the entire project together — it answers "What must be done?" and serves as the foundation for schedule, budget, resource assignments, and risk planning.</div>
+        </div>
+        <div class="step-item" data-n="05">
+          <div class="step-title">Estimate, Schedule, and Budget</div>
+          <div class="step-body">Using the WBS, estimate task durations, resources, and costs. Prepare the master schedule and baseline budget. Apply CPM or PERT to find the critical path and validate feasibility against the target completion date.</div>
+        </div>
+        <div class="step-item" data-n="06">
+          <div class="step-title">Get Sign-off in a Meeting</div>
+          <div class="step-body">Get all stakeholders to sign off on the plan — in a meeting, not by circulating it through email. A signature obtained without a discussion is worthless. The meeting creates accountability and surfaces disagreements before work begins.</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── WBS & SCHEDULING ── -->
+    <section class="section-anchor" id="wbs">
+      <p class="section-eyebrow">Chapters 7, 8 &amp; 9</p>
+      <h2 class="section-title">WBS, Scheduling &amp; CPM</h2>
+      <div class="prose">
+        <p>The <strong>Work Breakdown Structure (WBS)</strong> is the single most important planning tool in the book. The concept is simple: subdivide a complicated task into smaller tasks until you reach a level that cannot be further subdivided. At that point it becomes estimable. A well-built WBS answers "What must be done?" in its entirety — which is why projects most commonly fail because a significant piece of work was simply forgotten during planning.</p>
+
+        <h3 class="prose-h3">Key WBS Rules</h3>
+        <p>The WBS does not show sequence — that is determined later when the schedule is built. Its job is to capture all the work. It typically has three to six levels (up to twenty for massive programs). The rule for when to stop breaking work down: when you can estimate duration and cost to the desired degree of accuracy. No task should be scheduled with a duration greater than four to six weeks — longer tasks get back-end loaded as people feel the security of a distant deadline and then panic at the end.</p>
+        <p>The WBS must be developed <em>before</em> the schedule, not extracted from it after. A partial WBS produces a misleading critical path. The team should not trust a schedule built on an incomplete WBS.</p>
+
+        <h3 class="prose-h3">Critical Path Method (CPM)</h3>
+        <p>The <strong>Critical Path</strong> is the longest path through the network of project activities and determines the earliest possible completion date. Any activity on the critical path that takes longer than planned will delay the project end date by the same amount. Activities not on the critical path have "float" — time available before they become critical.</p>
+        <p>Understanding the critical path enables the PM to make intelligent trade-off decisions: which tasks can be compressed, which resources can be safely shared, and what the true impact of a proposed scope or priority change will be. Without a CPM analysis, managers make these decisions based on intuition — and are frequently wrong.</p>
+
+        <h3 class="prose-h3">PERT — Three-Point Estimating</h3>
+        <p>When estimating tasks that have never been done before (common in R&D, software, and engineering), point estimates are unreliable. The <strong>PERT weighted average</strong> uses three estimates: optimistic (O), most likely (M), and pessimistic (P), combined as <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: var(--spine-light);">(O + 4M + P) / 6</span>. This produces a more accurate expected duration that accounts for known uncertainty.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">Gantt vs. Arrow Diagrams</p>
+        <p>Gantt (bar) charts are the best working tool for teams executing tasks — easy to read, easy to update. But they do not show the dependencies between tasks, making it impossible to assess the impact of a schedule slip without a separate network diagram. The best practice is to use a CPM/arrow diagram to find the critical path and calculate float, then convert it to a bar chart for daily use.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── RISK & COMMS ── -->
+    <section class="section-anchor" id="risk">
+      <p class="section-eyebrow">Chapter 6</p>
+      <h2 class="section-title">Risk Management &amp; Communication Plans</h2>
+      <div class="prose">
+        <p>Risk management is the systematic process of identifying, analyzing, and responding to project risk. The operative word is <em>systematic</em>. Project managers who deal with risks informally — without a prior plan — are inviting failure. A formal risk plan forces proactive behavior; without it, the PM is a firefighter reacting to whatever goes wrong, which is the most expensive way to operate.</p>
+        <p>The sources of project risk are almost limitless: loss of a key team member, technical failures, poor suppliers, weather, shifting priorities, budget cuts. Risk management must begin early — during project initiation — not when the risk becomes apparent.</p>
+      </div>
+
+      <h3 class="prose-h3" style="margin-top: 24px;">The Six-Step Process for the Risk Plan</h3>
+      <div class="step-list">
+        <div class="step-item" data-n="Step 1">
+          <div class="step-title">Make a List (Brainstorm)</div>
+          <div class="step-body">Conduct a formal brainstorming session with the entire team. Every domain expert must participate — a procurement specialist will not identify software development risks, and vice versa. The goal is to capture every possible threat without filtering. Analysis comes later.</div>
+        </div>
+        <div class="step-item" data-n="Step 2">
+          <div class="step-title">Determine Probability of Occurrence</div>
+          <div class="step-body">For each risk, assess how likely it is to occur — using a High/Medium/Low scale or a numeric metric. This is a team judgment, not a formula. The assessment should draw on historical data from similar projects where available.</div>
+        </div>
+        <div class="step-item" data-n="Step 3">
+          <div class="step-title">Determine Negative Impact</div>
+          <div class="step-body">If this risk occurs, how badly will it affect the project's PCTS targets? Plot risks on a risk matrix (probability × impact) to identify which warrant the most attention. Watch especially for low-probability, very-high-impact risks — they are frequently ignored and can end projects.</div>
+        </div>
+        <div class="step-item" data-n="Step 4">
+          <div class="step-title">Prevent or Mitigate</div>
+          <div class="step-body">For high-priority risks, identify preventive measures — steps taken before the risk becomes reality. For risks that cannot be prevented, identify mitigation steps that reduce probability or impact. An unreliable supplier cannot be prevented from having problems, but the PM can proactively expedite delivery to reduce impact.</div>
+        </div>
+        <div class="step-item" data-n="Step 5">
+          <div class="step-title">Consider Contingencies</div>
+          <div class="step-body">Contingencies are the specific actions taken if the risk actually occurs. High-priority risks need multiple contingencies; medium-priority risks need at least one. Contingencies must be realistic and pre-approved so they can be activated quickly without seeking new approvals during a crisis.</div>
+        </div>
+        <div class="step-item" data-n="Step 6">
+          <div class="step-title">Establish the Trigger Point</div>
+          <div class="step-body">The trigger point is the specific moment when a contingency must be activated. Trigger too early and you waste resources. Trigger too late and the contingency provides no value. The trigger must be a defined point in time or measurable condition — not a vague feeling that things are going wrong.</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">Reserves</p>
+        <p><strong>Contingency reserves</strong> are time and budget set aside for identified risks that have been accepted — known unknowns. <strong>Management reserves</strong> cover unknown unknowns — risks that cannot be predicted. The most comprehensive risk plan is useless if there are no reserves to fund the contingencies when they are needed.</p>
+      </div>
+
+      <h3 class="prose-h3">The Communication Plan</h3>
+      <div class="prose">
+        <p>In every project management seminar Heagney leads, communication surfaces as the challenge cited most often. Despite this, few project managers formalize their communication approach. The communication plan should be treated with the same rigor as the WBS. It answers: <em>What</em> is being communicated? <em>When?</em> <em>How?</em> <em>How often?</em> <em>Who owns it?</em> <em>To whom?</em></p>
+        <p>The plan should also include an email protocol — cover who is on distribution, expectations for response time, and the rule that sensitive issues require face-to-face communication rather than email. Some of the best project managers Heagney has observed were unsuccessful precisely because they failed to plan and execute project communication formally.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── CONTROL & EARNED VALUE ── -->
+    <section class="section-anchor" id="control">
+      <p class="section-eyebrow">Chapters 10 &amp; 12</p>
+      <h2 class="section-title">Project Control &amp; Earned Value Analysis</h2>
+      <div class="prose">
+        <p>Control means using information to compare actual progress against the plan and taking corrective action when deviations occur. A system that detects deviations but takes no action is a <strong>monitoring system</strong>, not a control system. If you are driving and realize you are on the wrong road but do nothing to correct course, you are not exercising control.</p>
+        <p>Authority is not what creates control. Even presidents and vice presidents confirm that having authority does not guarantee people will do what you ask. In the end, people must <em>want</em> to perform. The project manager's control comes from influence, information, and the conditions she creates for her team — not from rank.</p>
+
+        <h3 class="prose-h3">Five Conditions for Team Member Self-Control</h3>
+        <p>The only way to truly control a project at the macro level is for every team member to be in control of their own work. This requires five conditions for each team member:</p>
+      </div>
+
+      <div class="step-list" style="margin-top: 20px;">
+        <div class="step-item" data-n="①">
+          <div class="step-title">Clear Definition of Their Objective</div>
+          <div class="step-body">State the objective and explain the purpose. This allows the individual to pursue the objective in their own way, using their expertise. There is a critical difference between assigning a task and communicating an objective — the task tells them what to do, the objective tells them what to achieve and why.</div>
+        </div>
+        <div class="step-item" data-n="②">
+          <div class="step-title">A Personal Plan for How to Do the Work</div>
+          <div class="step-body">If you have no plan, you have no control. This applies at the individual level as well as the project level. Each team member should plan their own work within the scope of their assigned tasks.</div>
+        </div>
+        <div class="step-item" data-n="③">
+          <div class="step-title">Skills and Resources Adequate to the Task</div>
+          <div class="step-body">A team member cannot exercise self-control if they lack the capabilities or tools to do the work. The PM's job is to identify these gaps early and resolve them — through training, procurement, or reassignment — before they become schedule or quality problems.</div>
+        </div>
+        <div class="step-item" data-n="④">
+          <div class="step-title">Direct Feedback from the Work Itself</div>
+          <div class="step-body">Feedback must go directly to the team member — not through layers of management. If a person building a wall must be told by the PM whether the wall is on track, the PM is still controlling. Direct feedback enables genuine self-management.</div>
+        </div>
+        <div class="step-item" data-n="⑤">
+          <div class="step-title">Authority to Take Corrective Action</div>
+          <div class="step-body">When a deviation occurs, the team member must have the authority to correct it without seeking approval. Authority must be greater than zero. If every minor correction requires PM sign-off, the PM has created a bottleneck and is still doing the controlling — defeating the purpose of delegation.</div>
+        </div>
+      </div>
+
+      <h3 class="prose-h3">Earned Value Analysis (EVA)</h3>
+      <div class="prose">
+        <p>Earned value analysis is the technically correct method for monitoring and controlling almost any project. It integrates cost and schedule performance into a single reporting system, enabling the PM to answer not just "Are we over budget?" but "Are we over budget <em>relative to the amount of work we have actually completed?</em>"</p>
+      </div>
+
+      <table class="phase-table" style="margin-top: 16px;">
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Formula / Abbreviation</th>
+            <th>What It Tells You</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="phase-name">BCWS</span></td>
+            <td><span class="phase-mono">Budgeted Cost of Work Scheduled</span></td>
+            <td>What you planned to spend by this point in time. The baseline.</td>
+          </tr>
+          <tr>
+            <td><span class="phase-name">BCWP</span></td>
+            <td><span class="phase-mono">Budgeted Cost of Work Performed</span></td>
+            <td>The budgeted value of work actually completed. Also called "earned value." The objective measure of progress.</td>
+          </tr>
+          <tr>
+            <td><span class="phase-name">ACWP</span></td>
+            <td><span class="phase-mono">Actual Cost of Work Performed</span></td>
+            <td>What you actually spent to complete that work. The reality check.</td>
+          </tr>
+          <tr>
+            <td><span class="phase-name">Cost Variance (CV)</span></td>
+            <td><span class="phase-mono">BCWP − ACWP</span></td>
+            <td>Negative = over budget for the work done. Positive = under budget.</td>
+          </tr>
+          <tr>
+            <td><span class="phase-name">Schedule Variance (SV)</span></td>
+            <td><span class="phase-mono">BCWP − BCWS</span></td>
+            <td>Negative = behind schedule. Positive = ahead of schedule. Expressed in dollar terms, not days.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <p class="callout-label">Why EVA Matters</p>
+        <p>A project that is 50% through its budget is not necessarily on track — it depends on whether 50% of the work has been completed. EVA answers this. A project that is "on budget" by simple spending comparison may actually be massively behind schedule, consuming budget on unfinished work. EVA makes the distinction visible before it becomes a crisis.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── CHANGE CONTROL ── -->
+    <section class="section-anchor" id="change">
+      <p class="section-eyebrow">Chapter 11</p>
+      <h2 class="section-title">The Change Control Process</h2>
+      <div class="prose">
+        <p>The most comprehensive, effective project plan will be wasted if no method of controlling change is implemented. Change control is not about resisting change — it is about ensuring that every change is assessed for its impact on scope, schedule, and budget before it is approved and executed. Without this discipline, the <strong>triple constraints triangle</strong> (scope, schedule, cost) loses its integrity, and the project baseline becomes meaningless.</p>
+        <p><strong>Scope creep</strong> is the most insidious form of uncontrolled change — the gradual expansion of a project's scope through small, seemingly reasonable additions that were never formally assessed or approved. Each individual addition seems harmless. Collectively, they add weeks and significant cost. The change control process is the primary weapon against scope creep.</p>
+
+        <h3 class="prose-h3">Six Steps of the Change Control Process</h3>
+      </div>
+
+      <div class="step-list" style="margin-top: 20px;">
+        <div class="step-item" data-n="01">
+          <div class="step-title">Enter the Change in the Change Control Log</div>
+          <div class="step-body">Every proposed change is documented immediately, regardless of how trivial it seems. The log is the controlling document and the source of truth for everything that was requested, approved, rejected, or deferred.</div>
+        </div>
+        <div class="step-item" data-n="02">
+          <div class="step-title">Determine Whether to Process the Change</div>
+          <div class="step-body">Not every change warrants full processing. Establish thresholds — below a certain impact level, changes may be handled by the PM directly. Above the threshold, the formal process is triggered. Defining thresholds in advance prevents decision fatigue and protects the PM from being accused of unilateral decisions.</div>
+        </div>
+        <div class="step-item" data-n="03">
+          <div class="step-title">Submit Recommendations for Approval</div>
+          <div class="step-body">Present the change, its impact analysis, and the PM's recommendation to the appropriate authority (management, the customer, or a steering committee). Come with a recommendation, not just a problem. Decision-makers want solutions, not more questions.</div>
+        </div>
+        <div class="step-item" data-n="04">
+          <div class="step-title">Update the Project Plan</div>
+          <div class="step-body">Once approved, update the plan immediately. This creates a new project baseline. An outdated baseline is as useless as no baseline — the plan loses its role as the controlling document.</div>
+        </div>
+        <div class="step-item" data-n="05">
+          <div class="step-title">Distribute the Updated Plan</div>
+          <div class="step-body">Communicate the updated plan to all stakeholders on the distribution list. A team working on revision 3 while a key stakeholder is working on the original plan is a guaranteed source of failure. Communication here is not optional.</div>
+        </div>
+        <div class="step-item" data-n="06">
+          <div class="step-title">Monitor the Change Against the Revised Plan</div>
+          <div class="step-body">Track progress against the new baseline, not the original. Verify that the change's impact was accurately forecast. Check whether the triple constraints triangle remains in balance after the adjustment.</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── TEAMS & LEADERSHIP ── -->
+    <section class="section-anchor" id="teams">
+      <p class="section-eyebrow">Chapters 13 &amp; 14</p>
+      <h2 class="section-title">Team Development &amp; Project Leadership</h2>
+      <div class="prose">
+        <p>Teams don't just happen — they must be built. The most common mistake is treating a collection of people assigned to a project as if they are already a team. They are not. The project manager must actively develop team cohesion, address the four critical elements in order — <strong>Goals, Roles &amp; Responsibilities, Procedures, and Relationships</strong> — and adapt her leadership style to the team's current developmental stage.</p>
+
+        <h3 class="prose-h3">Tuckman's Four Stages — and the Matching Leadership Style</h3>
+        <p>A project team progresses through four stages of development. The PM's required leadership style shifts at each stage. Applying the wrong style at the wrong stage is one of the most common and damaging mistakes a project leader makes.</p>
+      </div>
+
+      <div class="style-grid">
+        <div class="style-card">
+          <p class="style-stage">Stage 1</p>
+          <p class="style-name">Forming</p>
+          <p class="style-desc">Team members are uncertain about roles and expectations. They look to the leader for structure and direction. <strong>Required style: Directive.</strong> Failure to lead firmly here results in informal leaders filling the vacuum.</p>
+        </div>
+        <div class="style-card">
+          <p class="style-stage">Stage 2</p>
+          <p class="style-name">Storming</p>
+          <p class="style-desc">Anxiety rises; team members question whether the project is on the right track. Conflict emerges. <strong>Required style: Influencing/Selling.</strong> The PM must provide psychological support and persuade the team that progress is real. Do not suppress conflict — manage it.</p>
+        </div>
+        <div class="style-card">
+          <p class="style-stage">Stage 3</p>
+          <p class="style-name">Norming</p>
+          <p class="style-desc">Conflicts are resolving. Team members begin to see themselves as a team and support one another. <strong>Required style: Participative.</strong> The PM should share decision making and draw on team input.</p>
+        </div>
+        <div class="style-card">
+          <p class="style-stage">Stage 4</p>
+          <p class="style-name">Performing</p>
+          <p class="style-desc">The team functions cohesively, produces quality work, and takes pride in results. <strong>Required style: Delegative.</strong> The PM can focus on what-if analysis and future planning. Note: delegation is not abdication.</p>
+        </div>
+      </div>
+
+      <div class="callout-warn">
+        <p class="callout-label">Stage Regression Warning</p>
+        <p>No team stays in a single stage permanently. If obstacles arise, the team may drop back a stage and the PM must adjust their style accordingly. When new members join the team, the group temporarily returns to Stage 1 — the PM must help everyone get to know the new member and understand their role before the team can progress again.</p>
+      </div>
+
+      <h3 class="prose-h3">Leadership in the Project Context</h3>
+      <div class="prose">
+        <p>Heagney stresses that the project leader's job is to <strong>flex their style</strong> to match the stakeholder and the situation — not to find one style and apply it uniformly. Just as a chameleon changes color to maximize survival, the project leader must adjust approach as circumstances demand. Most people have a natural "comfort zone" style. Effective leadership requires the discipline to step outside that comfort zone when the situation calls for it.</p>
+        <p>Building <strong>constituents</strong> — stakeholders who actively support the project — is a key leadership activity. The PM cannot compel support from people over whom they have no authority. They must earn it, through clear communication, demonstrated competence, and a track record of follow-through.</p>
+        <p>Virtual teams present a compounded version of every leadership challenge. Heagney's emphatic advice: insist on a face-to-face kickoff meeting even when extensive travel is required. The investment in early bonding pays dividends throughout the project lifecycle. Communication protocols must be more formal, more explicit, and more redundant in virtual environments than in collocated ones.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── CLOSURE ── -->
+    <section class="section-anchor" id="closure">
+      <p class="section-eyebrow">Chapter 15</p>
+      <h2 class="section-title">Project Closeout</h2>
+      <div class="prose">
+        <p>Project closure is the most commonly skipped and most consistently undervalued phase of the life cycle. Heagney is blunt: <strong>a project should not be considered finished until a project closure checklist has been completed.</strong> Rushing closure means the organization learns nothing — and makes the same mistakes on the next project.</p>
+        <p>Closeout involves three streams of activity running in parallel:</p>
+      </div>
+
+      <div class="step-list" style="margin-top: 20px;">
+        <div class="step-item" data-n="①">
+          <div class="step-title">Administrative &amp; Contractual Closure</div>
+          <div class="step-body">Ensure all contractual obligations are formally met. Get customer sign-off — the project is not complete until the customer accepts it. Collect and archive all project documentation into a central repository (electronic or otherwise). Capture variance data for estimating future projects. Release team members formally.</div>
+        </div>
+        <div class="step-item" data-n="②">
+          <div class="step-title">Lessons-Learned Analysis</div>
+          <div class="step-body">Conduct a structured debrief with the team — ideally at the penultimate project meeting, not after the team has disbanded. Document what to <em>improve</em> and what to <em>embrace</em>. Feed the results into an organizational lessons-learned database. Building on successes and avoiding repeated mistakes is the compounding return on project experience. Do this even when — especially when — the project struggled.</div>
+        </div>
+        <div class="step-item" data-n="③">
+          <div class="step-title">Celebrate</div>
+          <div class="step-body">Reserve the final meeting for celebration. Even if the project was not wildly successful, the team worked hard. Acknowledging that effort is a leadership responsibility, not an optional courtesy. Celebration reinforces commitment and makes people want to be part of the next project team.</div>
+        </div>
+      </div>
+
+      <div class="callout-gold">
+        <p class="callout-label">Premature Closure</p>
+        <p>Projects are terminated or canceled early for many reasons: shifting priorities, depleted budget, market changes, organizational politics, or technical failure. Regardless of the reason, <strong>a project must be formally closed out whether it was completed, terminated, or canceled.</strong> The closure process is the same. Skipping it because the project failed leaves the organization with no data, no learning, and a greater probability of repeating the failure.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── RECOVERY ── -->
+    <section class="section-anchor" id="recovery">
+      <p class="section-eyebrow">Chapter 16</p>
+      <h2 class="section-title">Project Recovery — The FADE Process</h2>
+      <div class="prose">
+        <p>Project recovery is a new chapter in the 6th edition, added because troubled projects are ubiquitous and few project managers are trained to handle them systematically. The instinctive response — panic, blame, and hasty fixes — typically makes things worse. <strong>If you lose control, you relinquish control.</strong> The PM who remains calm, structured, and data-driven during a crisis is the one who recovers the project.</p>
+        <p>The critical principle: <strong>do not treat the symptoms.</strong> Throwing more money or time at a struggling project without diagnosing the root cause is like prescribing aspirin for a fever — it provides temporary relief while the underlying condition continues to worsen. Heagney uses the FADE process to impose discipline on recovery.</p>
+      </div>
+
+      <div class="step-list" style="margin-top: 20px;">
+        <div class="step-item" data-n="Focus">
+          <div class="step-title">Establish Current State vs. Baseline</div>
+          <div class="step-body">Calculate the three primary variances against the project baselines: <strong>Schedule Variance</strong> (planned completion date − actual completion date), <strong>Cost Variance</strong> (planned cost − actual cost, for both personnel and expenses), and <strong>Scope Variance</strong> (planned scope − current actual scope as a percentage). These variances define the problem. You cannot develop solutions until you understand what you are actually dealing with.</div>
+        </div>
+        <div class="step-item" data-n="Analyze">
+          <div class="step-title">Identify Root Causes</div>
+          <div class="step-body">Dig into the performance variances established in Focus. Review the original project charter, PERT estimates, critical path tasks, resource allocations, supplier performance, and the communication and change control records. Use a <strong>fishbone diagram</strong> to identify root causes of recurring problems. Do not skip this step to jump to solutions — a solution without root cause analysis is a temporary fix that typically creates new problems.</div>
+        </div>
+        <div class="step-item" data-n="Develop">
+          <div class="step-title">Develop and Evaluate Possible Solutions</div>
+          <div class="step-body">Convene a formal recovery meeting with team members, subject-matter experts, and key stakeholders. Generate multiple possible solutions, weigh costs and benefits of each, and select the approach. The recovery plan should include a WBS, revised schedule with critical path impact, resource requirements, budget impact, and risk analysis — including the question "What is the risk of doing nothing?"</div>
+        </div>
+        <div class="step-item" data-n="Execute">
+          <div class="step-title">Acquire Buy-in, Implement, and Monitor</div>
+          <div class="step-body">Present the recovery plan to decision-makers with data, not emotion. Lead with the plan and the evidence of its soundness. Acquire approval, then implement. Monitor the recovery against the new baseline exactly as you would any project plan. Plan the recovery. Schedule the recovery. Control the recovery. A recovery that is not itself managed as a project will simply become the next troubled project.</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── KEY TAKEAWAYS ── -->
+    <section class="section-anchor" id="takeaways">
+      <p class="section-eyebrow">Synthesis</p>
+      <h2 class="section-title">The Most Durable Takeaways</h2>
+
+      <div class="step-list">
+        <div class="step-item" data-n="01">
+          <div class="step-title">Projects fail in definition, not execution</div>
+          <div class="step-body">The ready-fire-aim mentality produces more total work, not less. Time invested in problem statements, mission statements, and plan sign-offs before work begins is always recovered many times over. The uncomfortable truth: most organizations do not allow adequate planning time, and the project failures that result are predictable.</div>
+        </div>
+        <div class="step-item" data-n="02">
+          <div class="step-title">Project management is a people discipline</div>
+          <div class="step-body">People skills are numbers one through three. The PM who is technically excellent but cannot lead, influence, and develop people will consistently underperform relative to the PM who is good with people and delegates the technical work. The discipline of PM exists precisely because managing is not the same as doing.</div>
+        </div>
+        <div class="step-item" data-n="03">
+          <div class="step-title">The WBS is the backbone of everything</div>
+          <div class="step-body">Schedule, budget, resource plan, risk plan, and progress measurement all hang from the WBS. A project with an incomplete WBS has a misleading critical path, an inaccurate budget, and unidentifiable scope creep. Build the WBS with the team before anything else.</div>
+        </div>
+        <div class="step-item" data-n="04">
+          <div class="step-title">Proactive risk management is the difference between firefighters and leaders</div>
+          <div class="step-body">A PM who manages risks informally is always reacting. Reactive management is the most expensive form of project management in terms of time, cost, and relationship capital. The Six-Step Risk Process — done at the beginning — turns the PM from a firefighter into a strategist.</div>
+        </div>
+        <div class="step-item" data-n="05">
+          <div class="step-title">Control is achieved by enabling, not commanding</div>
+          <div class="step-body">Project control is not a function of authority. It is a function of information flow, clear objectives, and the conditions the PM creates for team members to exercise self-control. A team that depends on the PM for every decision is not a controlled project — it is a bottleneck waiting to fail.</div>
+        </div>
+        <div class="step-item" data-n="06">
+          <div class="step-title">Change must be controlled and communicated</div>
+          <div class="step-body">Scope creep is not a single large decision — it is dozens of small ones, none of which individually seemed important enough to document. The change control process is the structural defense against this. A PM without a change control process has no plan — because the plan becomes whatever the most recent untracked request was.</div>
+        </div>
+        <div class="step-item" data-n="07">
+          <div class="step-title">Closeout is where organizational learning lives</div>
+          <div class="step-body">The lessons-learned analysis is not a bureaucratic formality. It is the mechanism by which organizations become progressively better at managing projects. A PM who skips closure consistently is extracting all the cost of project experience and contributing none of the learning back to the organization.</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ── CRITIQUE ── -->
+    <section class="section-anchor" id="critique">
+      <p class="section-eyebrow">Honest Assessment</p>
+      <h2 class="section-title">Where the Book Has Limits</h2>
+
+      <div class="critique-card">
+        <p class="critique-label">Waterfall Bias</p>
+        <p>Despite acknowledging agile and hybrid methodologies and the PMBOK 7th edition's shift toward adaptive frameworks, the book's practical guidance remains primarily oriented toward traditional, plan-driven (waterfall) project management. Readers managing software development projects, product development in rapidly changing markets, or any domain where requirements are inherently evolving will find the framework requires significant adaptation. The agile content feels appended rather than integrated.</p>
+      </div>
+
+      <div class="critique-card">
+        <p class="critique-label">Limited Organizational Context</p>
+        <p>The book largely treats projects as if they operate in organizational isolation. In practice, most projects exist inside matrix organizations, compete for shared resources with other projects, and must navigate political dynamics that the book addresses only briefly. Stakeholder management — formally a performance domain in PMBOK 7 — gets less depth than its real-world importance warrants. The section on managing upward and influencing without authority, while directionally correct, is thinner than the challenge deserves.</p>
+      </div>
+
+      <div class="critique-card">
+        <p class="critique-label">Scheduling Tools Show Their Age</p>
+        <p>The scheduling chapters, while technically sound, use manual network diagram construction as a teaching method. Modern project management software (MS Project, Smartsheet, Monday, Jira) has made manual CPM calculations largely obsolete in practice. The principles are correct and worth learning conceptually, but readers may find the gap between the book's examples and their actual toolset wider than expected.</p>
+      </div>
+
+      <div class="critique-card">
+        <p class="critique-label">Metrics Depth</p>
+        <p>The earned value analysis chapter covers the core concepts well but does not extend into modern performance indices like the Cost Performance Index (CPI) or Schedule Performance Index (SPI), which provide more actionable insight than raw variances. Readers who need to forecast final project cost (Estimate at Completion) or communicate performance to senior leadership will need supplementary material to bridge this gap.</p>
+      </div>
+
+      <div class="prose" style="margin-top: 24px;">
+        <p>These limitations are real but bounded. The book's core contributions — problem definition before planning, the WBS as the central planning artifact, the Six-Step Risk Process, team development stages matched to leadership style, and the FADE recovery framework — are durable regardless of methodology or industry. For a practitioner looking for a reliable conceptual foundation in project management, the 6th edition remains one of the most accessible and practically grounded introductions available.</p>
+      </div>
+    </section>
+
+    <div style="margin-top: 52px;">
+      <a class="back-btn" href="index.html">← Back to Library</a>
+    </div>
+
+  </div><!-- end content-wrap -->
+
+  <footer>
+    <p>Part of the Personal Reading Room library.</p>
+    <span class="footer-mono">project-management.html</span>
+  </footer>
+
+</body>
+</html>

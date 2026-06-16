@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Good to Great — Book Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:        #0F1B2D;
+      --navy-mid:    #1A2E47;
+      --spine:       #1B5E20;
+      --spine-light: #2E7D32;
+      --spine-glow:  rgba(27,94,32,0.26);
+      --gold:        #C8A84B;
+      --gold-light:  #E8C96A;
+      --cream:       #F7F4EE;
+      --cream-dark:  #EDE9E1;
+      --divider:     #D9D4CA;
+      --slate:       #4A5568;
+      --slate-light: #718096;
+      --text:        #1A1A1A;
+      --amber:       #92400E;
+      --amber-bg:    #FFFBEB;
+    }
+    html { scroll-behavior: smooth; }
+    body { background-color: var(--cream); color: var(--text); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.6; }
+
+    /* BREADCRUMB */
+    .breadcrumb { background: var(--navy); padding: 14px 40px; display: flex; align-items: center; gap: 10px; }
+    .breadcrumb a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.15s; }
+    .breadcrumb a:hover { color: var(--gold); }
+    .breadcrumb-sep { font-size: 12px; color: rgba(255,255,255,0.2); }
+    .breadcrumb-current { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.70); }
+
+    /* HERO */
+    .hero { background-color: var(--navy); padding: 52px 40px 48px; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--spine); }
+    .hero-glow { position: absolute; top: 0; left: 0; width: 480px; height: 100%; background: radial-gradient(ellipse at 0% 50%, var(--spine-glow) 0%, transparent 70%); pointer-events: none; }
+    .hero-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--spine-light); margin-bottom: 18px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 700; color: #FFF; line-height: 1.1; margin-bottom: 10px; }
+    .hero-author { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: rgba(255,255,255,0.50); margin-bottom: 28px; }
+    .hero-meta-row { display: flex; gap: 28px; flex-wrap: wrap; }
+    .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .hero-meta-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.30); }
+    .hero-meta-value { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); }
+
+    /* TOC BAR */
+    .toc-bar { background: var(--navy-mid); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 40px; overflow-x: auto; }
+    .toc-inner { max-width: 860px; margin: 0 auto; display: flex; }
+    .toc-link { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.40); text-decoration: none; padding: 14px 16px; border-bottom: 2px solid transparent; white-space: nowrap; transition: color 0.15s, border-color 0.15s; }
+    .toc-link:hover { color: rgba(255,255,255,0.80); border-bottom-color: var(--spine-light); }
+
+    /* CONTENT */
+    .content-wrap { max-width: 860px; margin: 0 auto; padding: 56px 40px 80px; }
+    .section-anchor { padding-top: 20px; }
+    .section-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--spine-light); margin-bottom: 10px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 600; color: var(--navy); line-height: 1.2; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--divider); }
+
+    /* PROSE */
+    .prose { font-size: 0.9625rem; line-height: 1.78; color: var(--slate); }
+    .prose p { margin-bottom: 18px; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: var(--navy); font-weight: 600; }
+    .prose em { font-style: italic; }
+    .prose-h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); margin: 32px 0 12px; }
+
+    /* CALLOUT - green spine */
+    .callout { background: #FFF; border-left: 4px solid var(--spine); border-radius: 0 4px 4px 0; padding: 20px 24px; margin: 28px 0; }
+    .callout-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--spine-light); margin-bottom: 8px; }
+    .callout p { font-size: 0.925rem; line-height: 1.70; color: var(--navy); margin: 0; }
+
+    /* CALLOUT - gold warning */
+    .callout-gold { background: var(--amber-bg); border-left: 4px solid var(--gold); border-radius: 0 4px 4px 0; padding: 20px 24px; margin: 28px 0; }
+    .callout-gold .callout-label { color: var(--amber); }
+    .callout-gold p { font-size: 0.925rem; line-height: 1.70; color: var(--amber); margin: 0; }
+
+    /* CALLOUT - orange warning */
+    .callout-warn { background: #FFF8F0; border-left: 4px solid #C05621; border-radius: 0 4px 4px 0; padding: 20px 24px; margin: 28px 0; }
+    .callout-warn .callout-label { color: #C05621; }
+    .callout-warn p { font-size: 0.925rem; line-height: 1.70; color: #5C3317; margin: 0; }
+
+    /* INSIGHT CARDS - two-column grid */
+    .insight-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; margin: 24px 0; }
+    .insight-card { background: #FFF; border: 1px solid var(--divider); border-top: 3px solid var(--spine); border-radius: 0 0 4px 4px; padding: 18px 20px; }
+    .insight-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--spine-light); margin-bottom: 8px; }
+    .insight-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+    .insight-body { font-size: 0.855rem; line-height: 1.60; color: var(--slate); }
+
+    /* STEP / NUMBERED LIST */
+    .step-list { display: flex; flex-direction: column; gap: 14px; margin: 24px 0; }
+    .step-item { background: #FFF; border: 1px solid var(--divider); border-radius: 4px; padding: 16px 20px 16px 56px; position: relative; }
+    .step-item::before { content: attr(data-n); font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--spine-light); position: absolute; left: 18px; top: 18px; }
+    .step-title { font-size: 0.9rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+    .step-body { font-size: 0.875rem; line-height: 1.65; color: var(--slate); }
+
+    /* COMPARISON TABLE */
+    .compare-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 0.875rem; }
+    .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate-light); text-align: left; padding: 10px 16px; background: var(--cream-dark); border-bottom: 1px solid var(--divider); }
+    .compare-table td { padding: 12px 16px; border-bottom: 1px solid var(--cream-dark); vertical-align: top; color: var(--slate); line-height: 1.55; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: #FFF; }
+    .col-great { font-weight: 600; color: var(--navy); }
+    .col-comp { color: #9B2020; }
+    .col-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--spine-light); white-space: nowrap; }
+
+    /* CRITIQUE CARD */
+    .critique-card { background: #FFF9F0; border: 1px solid #F0E0C0; border-left: 4px solid var(--gold); border-radius: 0 4px 4px 0; padding: 20px 24px; margin: 20px 0; }
+    .critique-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .critique-card p { font-size: 0.9rem; line-height: 1.70; color: #5C4A20; margin: 0; }
+
+    /* LEVEL 5 PYRAMID */
+    .pyramid { display: flex; flex-direction: column; gap: 6px; margin: 24px 0; }
+    .pyramid-tier { border-radius: 4px; padding: 12px 18px; display: flex; align-items: flex-start; gap: 14px; }
+    .tier-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: #FFF; background: var(--spine); border-radius: 3px; padding: 2px 7px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+    .tier-1 { background: rgba(27,94,32,0.12); border: 1px solid rgba(27,94,32,0.20); }
+    .tier-2 { background: rgba(27,94,32,0.08); border: 1px solid rgba(27,94,32,0.14); }
+    .tier-3 { background: rgba(27,94,32,0.05); border: 1px solid rgba(27,94,32,0.10); }
+    .tier-4 { background: rgba(0,0,0,0.03); border: 1px solid var(--divider); }
+    .tier-5 { background: rgba(0,0,0,0.02); border: 1px solid var(--cream-dark); }
+    .tier-title { font-size: 0.9rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+    .tier-desc { font-size: 0.845rem; color: var(--slate); line-height: 1.55; }
+
+    /* DIVIDER */
+    .section-divider { border: none; border-top: 1px solid var(--divider); margin: 52px 0 48px; }
+
+    /* BACK */
+    .back-btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: var(--slate-light); text-decoration: none; margin-bottom: 40px; transition: color 0.15s; }
+    .back-btn:hover { color: var(--navy); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--divider); padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; max-width: 860px; margin: 0 auto; }
+    footer p { font-size: 12px; color: var(--slate-light); }
+    .footer-mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--divider); letter-spacing: 0.06em; }
+
+    @media (max-width: 680px) {
+      .breadcrumb, .hero, .content-wrap, footer { padding-left: 24px; padding-right: 24px; }
+      .toc-bar { padding: 0 20px; }
+      .hero { padding-top: 36px; padding-bottom: 36px; }
+      .content-wrap { padding-top: 36px; padding-bottom: 60px; }
+      .insight-grid { grid-template-columns: 1fr; }
+      .compare-table { font-size: 0.82rem; }
+      .compare-table th, .compare-table td { padding: 10px 12px; }
+      footer { flex-direction: column; gap: 10px; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="index.html">Library</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current">Good to Great</span>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <p class="hero-label">Book Analysis — Strategy</p>
+      <h1>Good to Great</h1>
+      <p class="hero-author">Jim Collins</p>
+      <div class="hero-meta-row">
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Publisher</span>
+          <span class="hero-meta-value">HarperBusiness</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Published</span>
+          <span class="hero-meta-value">2001</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Research Scope</span>
+          <span class="hero-meta-value">28 companies · 10.5 person-years · ~6,000 articles</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Core Question</span>
+          <span class="hero-meta-value">Why do some companies make a sustained leap to greatness — and others don't?</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="toc-bar" aria-label="Page sections">
+    <div class="toc-inner">
+      <a class="toc-link" href="#overview">Overview</a>
+      <a class="toc-link" href="#methodology">Methodology</a>
+      <a class="toc-link" href="#framework">The Framework</a>
+      <a class="toc-link" href="#level5">Level 5 Leadership</a>
+      <a class="toc-link" href="#firstwho">First Who</a>
+      <a class="toc-link" href="#stockdale">Stockdale Paradox</a>
+      <a class="toc-link" href="#hedgehog">Hedgehog Concept</a>
+      <a class="toc-link" href="#discipline">Culture of Discipline</a>
+      <a class="toc-link" href="#technology">Technology</a>
+      <a class="toc-link" href="#flywheel">Flywheel</a>
+      <a class="toc-link" href="#takeaways">Key Takeaways</a>
+      <a class="toc-link" href="#critique">Critique</a>
+    </div>
+  </nav>
+
+  <div class="content-wrap">
+    <a class="back-btn" href="index.html">← Back to Library</a>
+
+    <!-- OVERVIEW -->
+    <section class="section-anchor" id="overview">
+      <p class="section-eyebrow">What This Book Is</p>
+      <h2 class="section-title">Overview &amp; Core Argument</h2>
+      <div class="prose">
+        <p><em>Good to Great</em> is a research-driven examination of what separates companies that made a sustained, exceptional leap in performance from those that remained merely good. Collins and his team did not begin with a theory to test — they built one from the ground up, derived entirely from the evidence, through five years of systematic comparison between companies that made the leap and otherwise-similar companies that did not.</p>
+        <p>The central finding is both counterintuitive and deeply uncomfortable for management culture: the things we commonly believe drive organizational greatness — charismatic celebrity leaders, visionary strategies, bold restructurings, transformative technologies, high-profile change programs — are largely absent from the actual record of great companies. What the data shows instead is quieter, more disciplined, and more patient than popular management wisdom suggests.</p>
+        <p>Collins frames the transformation as a process of buildup followed by breakthrough, organized across three stages: <strong>disciplined people</strong>, <strong>disciplined thought</strong>, and <strong>disciplined action</strong>. Every concept in the book sits inside one of these three stages. The flywheel idea wraps around all of them, capturing the cumulative, momentum-driven nature of the entire process.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">Good Is the Enemy of Great</p>
+        <p>The book opens with a deceptively simple observation: <strong>the enemy of great is not bad — it is good.</strong> The vast majority of companies never become great precisely because they become quite good, and good is comfortable enough to stop there. The same is true of individuals, schools, governments, and careers. The question is not how to go from bad to good, but how to go from good to truly great.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- METHODOLOGY -->
+    <section class="section-anchor" id="methodology">
+      <p class="section-eyebrow">The Research</p>
+      <h2 class="section-title">How the Study Was Done</h2>
+      <div class="prose">
+        <p>The research methodology was designed to answer a specific comparative question: what do good-to-great companies share that their direct comparison companies — same industry, same opportunities, same era — did not? Collins is explicit that studying gold medal winners in isolation tells you almost nothing. You need to compare them to silver medalists to understand what actually makes the difference.</p>
+        <p>Starting from every company that had ever appeared on the Fortune 500, the team applied a strict quantitative filter: find companies that showed at least fifteen years of stock performance at or below the general market, followed by a transition point, followed by at least fifteen years of cumulative returns at least three times the general market. The resulting eleven good-to-great companies were then matched with eleven direct comparison companies and six unsustained comparisons — companies that made a short-term shift toward greatness but failed to sustain it.</p>
+      </div>
+
+      <div class="insight-grid" style="margin-top: 20px;">
+        <div class="insight-card">
+          <p class="insight-label">Scale</p>
+          <p class="insight-title">10.5 Person-Years</p>
+          <p class="insight-body">Total research effort invested. The team read and systematically coded nearly 6,000 articles and generated more than 2,000 pages of interview transcripts.</p>
+        </div>
+        <div class="insight-card">
+          <p class="insight-label">Study Set</p>
+          <p class="insight-title">28 Companies</p>
+          <p class="insight-body">11 good-to-great, 11 direct comparisons, 6 unsustained comparisons. Each company pair faced the same industry conditions and competitive environment.</p>
+        </div>
+        <div class="insight-card">
+          <p class="insight-label">Inclusion Standard</p>
+          <p class="insight-title">3× the Market</p>
+          <p class="insight-body">Cumulative stock returns at least three times the general market over a minimum fifteen-year post-transition period. The average good-to-great company delivered returns 6.9 times the market.</p>
+        </div>
+        <div class="insight-card">
+          <p class="insight-label">Validation Test</p>
+          <p class="insight-title">100% / &lt;30%</p>
+          <p class="insight-body">Every chapter-level concept appeared in 100% of the good-to-great companies during pivotal years and in fewer than 30% of comparison companies. Findings that failed this test were excluded.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">The Most Important Finding — What Did NOT Matter</p>
+        <p>Some of the most powerful findings are the "dogs that didn't bark." Celebrity leaders who ride in from the outside are <strong>negatively correlated</strong> with going from good to great. Strategy per se did not separate the two groups — both had strategies. Executive compensation structure showed no systematic pattern. Technology did not ignite a transformation in any good-to-great company. Mergers and acquisitions played virtually no role. Two big mediocrities joined together never make one great company.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- FRAMEWORK -->
+    <section class="section-anchor" id="framework">
+      <p class="section-eyebrow">The Framework</p>
+      <h2 class="section-title">Three Stages, Six Concepts</h2>
+      <div class="prose">
+        <p>The good-to-great transformation is not a single leap or a grand program. It is a process. That process has a clear internal logic — three stages that must be built in sequence, each dependent on the one before it. Attempting disciplined action without first having disciplined people and thought is, in Collins' formulation, a recipe for disaster. The comparison companies' most common error was trying to jump to stage three while skipping the first two.</p>
+      </div>
+
+      <table class="compare-table" style="margin-top: 20px;">
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Concept 1</th>
+            <th>Concept 2</th>
+            <th>The Core Idea</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="col-label">Disciplined People</span></td>
+            <td><span class="col-great">Level 5 Leadership</span></td>
+            <td><span class="col-great">First Who, Then What</span></td>
+            <td>Start with who is on the team, not where you are going. The right people self-motivate; the wrong people cannot be motivated regardless of incentives.</td>
+          </tr>
+          <tr>
+            <td><span class="col-label">Disciplined Thought</span></td>
+            <td><span class="col-great">Confront Brutal Facts</span></td>
+            <td><span class="col-great">Hedgehog Concept</span></td>
+            <td>Maintain unwavering faith in the outcome while facing current reality squarely. Build strategy on what you can actually be the best in the world at.</td>
+          </tr>
+          <tr>
+            <td><span class="col-label">Disciplined Action</span></td>
+            <td><span class="col-great">Culture of Discipline</span></td>
+            <td><span class="col-great">Technology Accelerators</span></td>
+            <td>Build a system of freedom within a framework. Use technology to accelerate an already-spinning flywheel — never as a substitute for it.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- LEVEL 5 LEADERSHIP -->
+    <section class="section-anchor" id="level5">
+      <p class="section-eyebrow">Chapter 2 — Disciplined People</p>
+      <h2 class="section-title">Level 5 Leadership</h2>
+      <div class="prose">
+        <p>The most surprising finding in the entire study. Collins' team initially tried to ignore the leadership data, to avoid the simplistic "credit the leader" thinking that pervades management literature. But the data was overwhelming: every good-to-great company had a Level 5 leader at the helm during its transition period. The absence of Level 5 leadership was equally consistent among the comparison companies.</p>
+        <p>Level 5 is the highest tier in a five-level hierarchy of executive capability. What makes it distinctive — and counterintuitive — is that Level 5 leaders embody a seemingly paradoxical combination: <strong>extreme personal humility paired with intense professional will</strong>. They are not meek. They are not soft. They are ferociously ambitious — but their ambition is directed at the institution, not at themselves.</p>
+      </div>
+
+      <div class="pyramid">
+        <div class="pyramid-tier tier-1">
+          <span class="tier-num">L5</span>
+          <div><p class="tier-title">Level 5 Executive</p><p class="tier-desc">Builds enduring greatness through a paradoxical combination of personal humility and professional will. Ambitious for the company, not for themselves.</p></div>
+        </div>
+        <div class="pyramid-tier tier-2">
+          <span class="tier-num">L4</span>
+          <div><p class="tier-title">Effective Leader</p><p class="tier-desc">Catalyzes commitment to a compelling vision and stimulates the group to high performance. Often the type corporate boards seek — and often the wrong choice for sustained greatness.</p></div>
+        </div>
+        <div class="pyramid-tier tier-3">
+          <span class="tier-num">L3</span>
+          <div><p class="tier-title">Competent Manager</p><p class="tier-desc">Organizes people and resources toward the effective and efficient pursuit of predetermined objectives.</p></div>
+        </div>
+        <div class="pyramid-tier tier-4">
+          <span class="tier-num">L2</span>
+          <div><p class="tier-title">Contributing Team Member</p><p class="tier-desc">Contributes individual capabilities to the achievement of group objectives; works effectively with others in a group setting.</p></div>
+        </div>
+        <div class="pyramid-tier tier-5">
+          <span class="tier-num">L1</span>
+          <div><p class="tier-title">Highly Capable Individual</p><p class="tier-desc">Makes productive contributions through talent, knowledge, skills, and good work habits.</p></div>
+        </div>
+      </div>
+
+      <h3 class="prose-h3">Humility + Will = Level 5</h3>
+      <div class="prose">
+        <p>The duality is best captured by the "window and the mirror" pattern. Level 5 leaders look <em>out the window</em> to give credit when things go well — to luck, to their team, to circumstance. They look <em>in the mirror</em> to assign responsibility when things go poorly, taking full accountability. Comparison leaders did exactly the opposite: credit for success went inward; blame for failure went outward.</p>
+        <p>Darwin Smith of Kimberly-Clark is the canonical example. An eighteen-year lawyer who had never run a major business, he was described by the board as an "inside counsel who had never headed a major corporation." His response to this assessment was characteristic: "I never stopped trying to become qualified for the job." He then made what one board member called the gutsiest decision he had ever seen a CEO make — selling Kimberly-Clark's mills to throw everything into consumer brands like Kleenex and Huggies. Wall Street analysts called the move stupid. Smith never wavered. Twenty-five years later, Kimberly-Clark beat Procter &amp; Gamble in six of eight product categories.</p>
+        <p>Contrast this with Lee Iacocca, who saved Chrysler from the brink in a genuine turnaround but then diverted his attention to becoming one of the most celebrated CEOs in American history. His personal stock soared while Chrysler's fell 31 percent behind the market in the second half of his tenure. Chrysler ultimately failed as an independent company. The good company result was real. The great company result was never achieved.</p>
+      </div>
+
+      <div class="callout-warn">
+        <p class="callout-label">The Succession Problem</p>
+        <p>Level 5 leaders set up their <strong>successors for even greater success</strong>. Level 4 leaders — driven by ego needs rather than institutional ambition — frequently set up their successors for failure, often unconsciously, because they cannot fully separate their own legacy from the institution's future. This is one of the most destructive patterns in corporate governance, and boards that seek charismatic celebrity leaders actively select against Level 5 potential.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- FIRST WHO -->
+    <section class="section-anchor" id="firstwho">
+      <p class="section-eyebrow">Chapter 3 — Disciplined People</p>
+      <h2 class="section-title">First Who … Then What</h2>
+      <div class="prose">
+        <p>Collins expected to find that the first step in the transformation was setting a compelling new vision and strategy, then getting people aligned behind it. The research found the opposite. Good-to-great leaders began not by figuring out where to drive the bus, but by getting the right people on the bus, the wrong people off it, and the right people in the right seats — and then figured out where to drive it.</p>
+        <p>This is a complete inversion of conventional leadership wisdom, and the logic behind it is robust. First, if you start with "who" rather than "what," you can adapt to a changing world: the right people will move with you in a new direction because they're on the bus for the people around them, not for the destination. Second, if you have the right people, the problem of motivation largely disappears — they are self-motivated by the inner drive to produce the best results and be part of something great. Third, if you have the wrong people, the right strategy is irrelevant. Great vision without great people is irrelevant.</p>
+      </div>
+
+      <h3 class="prose-h3">Three Practical Disciplines</h3>
+      <div class="step-list">
+        <div class="step-item" data-n="01">
+          <div class="step-title">When in doubt, don't hire — keep looking</div>
+          <div class="step-body">A company should limit its growth based on its ability to attract enough of the right people. The moment you feel the need to tightly manage someone, you've already made a hiring mistake. The best people don't need to be managed — guided, taught, led, yes. But not tightly managed. Hiring someone you're uncertain about because you need to fill the seat quickly is almost always more expensive than the delay of continuing to look.</div>
+        </div>
+        <div class="step-item" data-n="02">
+          <div class="step-title">When you know you need to make a people change, act</div>
+          <div class="step-body">The moment you know, you must act. Waiting is unfair to the right people, who are compensating for the wrong person. It is also unfair to the wrong person, who is spending time in a role where they cannot flourish. Every minute you allow someone to hold a seat you know they will not fill is time you are stealing from their ability to find a better fit. The honest reason for delay is almost never concern for the person — it is the discomfort and inconvenience to the manager.</div>
+        </div>
+        <div class="step-item" data-n="03">
+          <div class="step-title">Put your best people on your biggest opportunities, not your biggest problems</div>
+          <div class="step-body">The instinctive response to a troubled area is to assign your best talent to fix it. Good-to-great leaders did the opposite — they assigned best people to the largest opportunities for growth, and let problems either resolve themselves or be managed by adequate people. If you sell off your problems, don't sell off your best people with them. First, ensure you don't simply have someone in the wrong seat rather than the wrong person.</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">Rigorous, Not Ruthless</p>
+        <p>Good-to-great companies are not easy places to work — if you don't have what it takes, you won't last long. But the key distinction is between being <strong>rigorous</strong> and being <strong>ruthless</strong>. Ruthless means hacking and cutting, firing without thoughtful consideration. Rigorous means consistently applying exacting standards at all times and at all levels — especially in upper management. The right people need not worry about their positions, and can concentrate fully on their work. The comparison companies used layoffs as a primary strategy for improving performance far more frequently than the good-to-great companies, and it never produced sustained results.</p>
+      </div>
+
+      <h3 class="prose-h3">The Compensation Corollary</h3>
+      <div class="prose">
+        <p>The research found no systematic pattern linking specific forms of executive compensation to the shift from good to great. This is a finding that cuts against a significant assumption in corporate governance. The logic is simple once understood: the purpose of a compensation system should not be to motivate the right behaviors from the wrong people — it should be to get and keep the right people in the first place. The right people will do the right things regardless of the incentive structure, because their moral code requires building excellence for its own sake.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- STOCKDALE PARADOX -->
+    <section class="section-anchor" id="stockdale">
+      <p class="section-eyebrow">Chapter 4 — Disciplined Thought</p>
+      <h2 class="section-title">Confront the Brutal Facts — The Stockdale Paradox</h2>
+      <div class="prose">
+        <p>Admiral Jim Stockdale was the highest-ranking U.S. military officer in the "Hanoi Hilton" prisoner-of-war camp during the Vietnam War. Tortured over twenty times during eight years of imprisonment, Stockdale had no set release date and no certainty of survival. He lived by a paradox that became one of the most powerful findings in Collins' research: you must never confuse <strong>faith that you will prevail in the end</strong> — which you can never afford to lose — with the <strong>discipline to confront the most brutal facts of your current reality</strong>, whatever they might be.</p>
+        <p>Collins asked Stockdale who didn't make it out of the camp. His answer was immediate: the optimists. The ones who said "We'll be out by Christmas." Christmas came and went. Then Easter. Then Thanksgiving. Then Christmas again. They died of a broken heart, their will broken by the repeated collision between false hope and brutal reality.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">The Stockdale Paradox — Applied to Organizations</p>
+        <p>Every good-to-great company faced significant adversity during its journey. Every one of them responded with the same psychological duality: stoic acceptance of the brutal facts of their current reality, paired with unwavering faith in the endgame. The comparison companies, by contrast, exhibited one side or the other — either delusional optimism that ignored the facts, or paralysis in the face of them. Neither worked. The combination is what made the difference.</p>
+      </div>
+
+      <h3 class="prose-h3">Four Practices for Creating a Climate Where Truth Is Heard</h3>
+      <div class="step-list">
+        <div class="step-item" data-n="01">
+          <div class="step-title">Lead with questions, not answers</div>
+          <div class="step-body">Leaders who come in with the answers do two things: they prevent the organization from discovering better answers, and they signal that having different answers is unwelcome. The good-to-great leaders relentlessly asked questions — genuine inquiry rather than rhetorical confirmation. This created a climate in which the truth could surface.</div>
+        </div>
+        <div class="step-item" data-n="02">
+          <div class="step-title">Engage in dialogue and debate, not coercion</div>
+          <div class="step-body">The good-to-great executive teams debated vigorously — sometimes violently — in pursuit of the best answers. But this debate came from intellectual engagement, not political positioning or ego protection. Once the decision was made, they unified fully behind it regardless of individual position. Debate in pursuit of truth; unity in execution.</div>
+        </div>
+        <div class="step-item" data-n="03">
+          <div class="step-title">Conduct autopsies without blame</div>
+          <div class="step-body">When things went wrong, the good-to-great companies studied what happened with genuine curiosity rather than political theater. Blame assigns the problem to a person and closes the inquiry. Blameless autopsies assign the problem to a cause and open the possibility of learning. Charismatic leaders often make this impossible — people filter information to protect themselves from the leader's reaction.</div>
+        </div>
+        <div class="step-item" data-n="04">
+          <div class="step-title">Build red-flag mechanisms</div>
+          <div class="step-body">Create structural mechanisms that make information impossible to ignore. Nucor's Ken Iverson kept the lines open between frontline workers and top management. Fannie Mae's David Maxwell instituted a system where loan officers could report problems without fear of repercussion. Information that reaches the executive suite without distortion is the raw material of good decisions.</div>
+        </div>
+      </div>
+
+      <div class="callout-warn">
+        <p class="callout-label">Charisma as Liability</p>
+        <p>Charisma can be as much a liability as an asset. A leader with enormous personal magnetism and force of will tends to create an information-filtering culture around themselves — people tell them what they want to hear rather than what they need to know. The strength of the leadership personality can systematically undermine the organization's ability to confront its brutal facts. This is one of the most counterintuitive findings in the book, and one of the most empirically robust.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- HEDGEHOG CONCEPT -->
+    <section class="section-anchor" id="hedgehog">
+      <p class="section-eyebrow">Chapter 5 — Disciplined Thought</p>
+      <h2 class="section-title">The Hedgehog Concept</h2>
+      <div class="prose">
+        <p>From Isaiah Berlin's famous essay: "The fox knows many things, but the hedgehog knows one big thing." The fox deploys many strategies, adapts constantly, and pursues multiple ends simultaneously. The hedgehog reduces everything to a single organizing idea — a basic principle or concept that unifies and guides all thinking and action. Against every attack, the hedgehog does one thing: roll up into a ball of spikes. It works every time.</p>
+        <p>The good-to-great companies were hedgehogs. The comparison companies were foxes — clever, active, pursuing many strategies simultaneously, never achieving the coherence of a single powerful idea.</p>
+        <p>A Hedgehog Concept is not a goal, a strategy, or an intention. It is an <strong>understanding</strong> — a deep, honest, egoless recognition of what you can actually be the best in the world at. The distinction is absolutely crucial. Every company wants to be the best at something. Very few actually understand — with piercing clarity — what they genuinely have the potential to be best at and, equally important, what they cannot be best at.</p>
+      </div>
+
+      <h3 class="prose-h3">The Three Circles</h3>
+      <div class="insight-grid">
+        <div class="insight-card">
+          <p class="insight-label">Circle 1</p>
+          <p class="insight-title">What you can be best in the world at</p>
+          <p class="insight-body">Not what you want to be best at. Not what you have always done. What you <em>can actually become</em> the best in the world at — with egoless clarity. This is a much more severe standard than a core competence. You may have a competence at something you can never be truly best in the world at. And you may have the potential to be best in the world at something you are not currently doing at all.</p>
+        </div>
+        <div class="insight-card">
+          <p class="insight-label">Circle 2</p>
+          <p class="insight-title">What drives your economic engine</p>
+          <p class="insight-body">Every good-to-great company developed a single economic denominator — <strong>profit per X</strong> — that captured the key driver of their economics with the greatest impact. Walgreens: profit per customer visit. Fannie Mae: profit per mortgage risk level. Nucor: profit per ton of finished steel. The denominator is not found by calculation alone — it requires genuine insight into the underlying business model.</p>
+        </div>
+        <div class="insight-card">
+          <p class="insight-label">Circle 3</p>
+          <p class="insight-title">What you are deeply passionate about</p>
+          <p class="insight-body">The idea is not to stimulate passion but to <em>discover</em> what makes the organization and its people genuinely passionate. You cannot manufacture passion; you can only find it. This doesn't require passion about the mechanics of the business — Fannie Mae people weren't passionate about packaging mortgages, but they were passionate about expanding home ownership. The passion can be about what the business does for the world, not just what it does technically.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">The Curse of Competence</p>
+        <p>One of the most dangerous traps for organizations is the "curse of competence" — continuing to do something simply because you have always done it and are reasonably good at it, even when you could never truly be the best in the world at it. Abbott Laboratories recognized by 1964 that it had lost the opportunity to become the best pharmaceutical company — Merck and others had built research engines with an insurmountable lead. Rather than continuing to pursue a race they could never win, Abbott pivoted to a concept they <em>could</em> be best in the world at: creating products that contribute to cost-effective health care. This was a direct confrontation of brutal facts in the service of a new Hedgehog Concept.</p>
+      </div>
+
+      <h3 class="prose-h3">It Takes Time — The Council</h3>
+      <div class="prose">
+        <p>Getting the Hedgehog Concept took an average of four years in the good-to-great companies. It is an inherently iterative process — not an event. The mechanism Collins recommends is the Council: a standing group of five to twelve people who participate in dialogue and debate about vital questions, always guided by the three circles. The Council does not seek consensus — consensus decisions are often at odds with intelligent decisions. It exists to deepen understanding. The CEO retains final responsibility.</p>
+        <p>One final critical point: <strong>a stop-doing list is more important than a to-do list.</strong> The disciplined application of the Hedgehog Concept requires actively saying no to opportunities — even good ones — that fall outside the three circles. The good-to-great companies had a near-religious consistency in what they would not do. The comparison companies lacked this discipline and constantly chased shiny new opportunities, each one pulling them further from coherence.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- CULTURE OF DISCIPLINE -->
+    <section class="section-anchor" id="discipline">
+      <p class="section-eyebrow">Chapter 6 — Disciplined Action</p>
+      <h2 class="section-title">A Culture of Discipline</h2>
+      <div class="prose">
+        <p>All companies have a culture. Some companies have discipline. Very few have a culture of discipline — which is something categorically different from either. The distinction between a culture of discipline and a tyrannical disciplinarian is one of the most important nuances in the book, and one that is most frequently misunderstood.</p>
+        <p>A tyrannical disciplinarian creates compliance through force of personality. When that person leaves, the discipline evaporates. Lee Iacocca turned Chrysler around through sheer force of will, and Chrysler collapsed after he left. Stanley Gault drove extraordinary performance at Rubbermaid through personal authority; Rubbermaid declined sharply after his departure. Burroughs' Ray MacDonald was an "autocratic genius who had mesmerized the company" — and after he retired, his team was frozen by indecision because they had never developed the internal discipline to act on their own judgment.</p>
+        <p>A culture of discipline is different: it is systemic, not personal. It lives in the organization after any individual departs. It gives people <strong>freedom and responsibility within a framework</strong>, rather than compliance without judgment.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">The Bureaucracy Death Spiral</p>
+        <p>Most companies build bureaucratic rules to manage the small percentage of wrong people on the bus. This in turn drives away the right people — who find the bureaucracy stifling and demeaning — which increases the percentage of wrong people, which increases the need for more bureaucracy, which drives away more right people, and so on. The alternative is to avoid bureaucracy by <strong>getting the right people in the first place</strong>. Self-disciplined people who share the organization's values don't need to be managed into compliance — they simply need a clear framework within which to exercise their own judgment and take responsibility for their own results.</p>
+      </div>
+
+      <div class="prose">
+        <p>The "rinsing your cottage cheese" metaphor captures the intensity of discipline in these organizations. World-class Ironman triathlete Dave Scott burned 5,000 calories a day in training and had no weight problem — yet he rinsed the fat off his cottage cheese before eating it, because he believed every marginal advantage contributed to winning. There is no proof that this particular habit was necessary. That's not the point. The point is that the good-to-great companies were characterized by this kind of fanatical attention to every detail of their Hedgehog Concept, even when the marginal benefit of any individual detail was uncertain.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- TECHNOLOGY -->
+    <section class="section-anchor" id="technology">
+      <p class="section-eyebrow">Chapter 7 — Disciplined Action</p>
+      <h2 class="section-title">Technology as Accelerator, Not Creator</h2>
+      <div class="prose">
+        <p>In 80 percent of executive interviews with good-to-great companies, technology was not mentioned among the top five factors in the transformation. This is startling — even in companies famous for their pioneering application of technology, like Nucor. The reason is that Collins' team discovered a clear, consistent pattern: <strong>good-to-great companies never used technology as the primary means of igniting their transformation.</strong> Technology cannot create a transformation. It can only accelerate one that already exists.</p>
+        <p>The relevant question is never "How do we use technology?" It is: "Does this technology fit directly with our Hedgehog Concept?" If yes — become a pioneer in its application, immediately and aggressively. If not — all you need is parity; don't lead with it and don't be distracted by the hype around it.</p>
+        <p>Walgreens illustrates the pattern precisely. When drugstore.com launched and analysts were predicting Walgreens would be left behind, Walgreens lost over 40 percent of its stock price in the months leading up to the IPO. Their response was to pause, think, and ask a single question: how does the internet fit with our Hedgehog Concept of convenient pharmacy? Only after answering that question clearly did they move — deliberately, methodically, and ultimately far more successfully than their internet-native competitors. By 2002, Walgreens' online pharmacy was generating more prescriptions than drugstore.com's entire business.</p>
+        <p>The comparison companies behaved differently. They reacted to technology with either fear ("We'll be left behind!") or excitement ("This is our chance to jump ahead!") — neither of which is thinking. Great companies respond to technological change from the quiet confidence of their Hedgehog Concept, not from anxiety about falling behind.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- FLYWHEEL -->
+    <section class="section-anchor" id="flywheel">
+      <p class="section-eyebrow">Chapter 8 — The Gestalt</p>
+      <h2 class="section-title">The Flywheel and the Doom Loop</h2>
+      <div class="prose">
+        <p>Picture a massive metal flywheel — 30 feet in diameter, two feet thick, weighing 5,000 pounds — mounted on an axle. Your task is to make it rotate as fast and as long as possible. At first, you push with enormous effort and it barely moves. After two or three hours of persistent pushing, you complete one full rotation. You keep pushing. After many turns, the flywheel begins to build speed. At some point — breakthrough — the momentum kicks in, the flywheel accelerates, and it hurls itself forward with almost unstoppable force. Each turn builds on all the previous turns.</p>
+        <p>Someone watching from the outside sees the flywheel spinning at tremendous speed and asks: "What was the one big push that made this happen?" There is no answer. There was no single push. Every turn of the wheel contributed. The breakthrough was not a moment — it was the cumulative consequence of all the turns that came before it.</p>
+        <p>This is precisely how every good-to-great transformation felt from the inside. There was no launch event, no tag line, no program, no miracle moment. Some executives said they weren't even aware a major transformation was under way until they were well into it. The dramatic results visible from the outside felt like an organic, cumulative buildup from the inside. Collins compares it to John Wooden's UCLA basketball dynasty: Wooden coached for fifteen years in relative obscurity before winning his first NCAA championship in 1964. The underlying foundations — recruiting system, coaching philosophy, full-court-press style — had been built turn by turn across fifteen seasons. Then, for the next twelve years, they were nearly unbeatable.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">The Flywheel Effect on Alignment</p>
+        <p>The good-to-great leaders spent essentially no energy trying to "create alignment," "motivate the troops," or "manage change." Under the right conditions — the right people on the bus, confronting brutal facts, pushing consistently in the direction of the Hedgehog Concept — the problems of commitment, alignment, motivation, and change largely took care of themselves. <strong>Alignment follows from momentum and results, not the other way around.</strong> When people can see tangible results and feel the flywheel building speed, they line up to push.</p>
+      </div>
+
+      <h3 class="prose-h3">The Doom Loop</h3>
+      <div class="prose">
+        <p>The comparison companies followed the opposite pattern. Instead of quietly accumulating momentum turn by turn, they sought the single defining action, the grand program, the one killer innovation, the miracle moment that would allow them to skip the buildup and jump to breakthrough. When each dramatic initiative failed to produce sustained results, they'd stop, change direction, and launch another grand program. Back and forth, lurch and thrash, each CEO trying to make their mark with a new program that undid the momentum of the previous one.</p>
+        <p>Warner-Lambert illustrates the doom loop in its most extreme form. Between 1979 and 1998, the company cycled through consumer products, then healthcare, then back to consumer products, then back to healthcare, then back again — three major restructurings, 20,000 layoffs, one per CEO. Each new leader stopped the flywheel and threw it in a new direction. The company never built momentum. It was eventually acquired by Pfizer.</p>
+        <p>The misguided use of acquisitions is particularly telling. The comparison companies turned to large acquisitions in an attempt to jump to breakthrough — to buy what they couldn't organically build. It never worked. The good-to-great companies also made major acquisitions — but almost exclusively <em>after</em> their transition, as accelerators of an already-spinning flywheel. Two mediocrities joined together never make one great company. But a great company with momentum can accelerate that momentum through a well-chosen acquisition.</p>
+      </div>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Good-to-Great Companies</th>
+            <th>Comparison Companies</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="col-label">Change Process</span></td>
+            <td><span class="col-great">Organic, cumulative, no launch event</span></td>
+            <td><span class="col-comp">Revolutionary programs, fanfare, "motivating the troops"</span></td>
+          </tr>
+          <tr>
+            <td><span class="col-label">Strategy</span></td>
+            <td><span class="col-great">Consistent direction over time; stays within 3 circles</span></td>
+            <td><span class="col-comp">Lurch from one direction to another; follows trends</span></td>
+          </tr>
+          <tr>
+            <td><span class="col-label">Acquisitions</span></td>
+            <td><span class="col-great">Used after breakthrough, to accelerate momentum</span></td>
+            <td><span class="col-comp">Used to create breakthrough, as a substitute for it</span></td>
+          </tr>
+          <tr>
+            <td><span class="col-label">Leadership Transition</span></td>
+            <td><span class="col-great">Successors build on and extend the flywheel</span></td>
+            <td><span class="col-comp">Each new leader stops and reverses the flywheel</span></td>
+          </tr>
+          <tr>
+            <td><span class="col-label">Alignment</span></td>
+            <td><span class="col-great">Follows naturally from visible results and momentum</span></td>
+            <td><span class="col-comp">Pursued as a goal through change management programs</span></td>
+          </tr>
+          <tr>
+            <td><span class="col-label">External Perception</span></td>
+            <td><span class="col-great">Looks like a sudden breakthrough from outside</span></td>
+            <td><span class="col-comp">Each program looks promising, results never sustain</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- KEY TAKEAWAYS -->
+    <section class="section-anchor" id="takeaways">
+      <p class="section-eyebrow">Synthesis</p>
+      <h2 class="section-title">The Most Durable Takeaways</h2>
+
+      <div class="step-list">
+        <div class="step-item" data-n="01">
+          <div class="step-title">Greatness is a choice, not a circumstance</div>
+          <div class="step-body">The good-to-great companies were not, by and large, in great industries. Some were in terrible ones. In no case did a company simply happen to be sitting on a rocket when it took off. The data is unambiguous: greatness is largely a matter of conscious choice and disciplined execution, not lucky timing or favorable conditions.</div>
+        </div>
+        <div class="step-item" data-n="02">
+          <div class="step-title">Who before what — always</div>
+          <div class="step-body">The sequence matters enormously. Organizations that begin with strategy and try to build the team needed to execute it are structurally dependent on the strategy being right. Organizations that begin with the right people can adapt their strategy as conditions change. The right people will do the right things and deliver the best results they're capable of regardless of the incentive system.</div>
+        </div>
+        <div class="step-item" data-n="03">
+          <div class="step-title">Both sides of the Stockdale Paradox must be held simultaneously</div>
+          <div class="step-body">Unwavering faith in the endgame without confronting current reality produces delusion. Confronting brutal facts without faith in the endgame produces paralysis. The power comes from holding both simultaneously, without letting either side overshadow the other. This is one of the most psychologically demanding leadership requirements in the book — and one of the most empirically well-supported.</div>
+        </div>
+        <div class="step-item" data-n="04">
+          <div class="step-title">The Hedgehog Concept is an understanding, not a goal</div>
+          <div class="step-body">The distinction between what you can be the best at and what you want to be the best at is the difference between a great strategy and a delusional one. Getting this right takes time — four years on average. The Council mechanism is how you do the iterative work. The stop-doing list is how you enforce it. The discipline to say no to opportunities outside the three circles is where most organizations fail.</div>
+        </div>
+        <div class="step-item" data-n="05">
+          <div class="step-title">Transformation feels like organic buildup from the inside</div>
+          <div class="step-body">The most important implication of the flywheel is that there is no magic moment, no program, no single push. Every turn contributes. This means the work of building greatness is unglamorous, repetitive, and patient — precisely the opposite of what management culture celebrates. It also means that organizations can measure their progress by the consistency of their direction, not by the drama of their initiatives.</div>
+        </div>
+        <div class="step-item" data-n="06">
+          <div class="step-title">Bureaucracy is a symptom, not a solution</div>
+          <div class="step-body">When bureaucracy proliferates, it signals a people problem, not a process gap. The right response to bureaucracy is to fix the people problem — get the right people on the bus — not to design more sophisticated controls. Controls designed to manage the wrong people drive away the right ones, compounding the original problem. A culture of discipline built on self-disciplined people makes bureaucracy unnecessary.</div>
+        </div>
+        <div class="step-item" data-n="07">
+          <div class="step-title">Technology accelerates; it does not create</div>
+          <div class="step-body">No good-to-great transformation was initiated by technology. Technology is a powerful accelerant for a flywheel already building momentum. Applied without a clear Hedgehog Concept to guide it, technology produces neither strategic clarity nor sustained results. The questions is not "How do we use this technology?" but "Does this technology fit directly with what we can be best in the world at?"</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- CRITIQUE -->
+    <section class="section-anchor" id="critique">
+      <p class="section-eyebrow">Honest Assessment</p>
+      <h2 class="section-title">Where the Book Has Limits</h2>
+
+      <div class="critique-card">
+        <p class="critique-label">Survivorship Bias and Selection Methodology</p>
+        <p>The selection methodology — identifying good-to-great companies by their stock returns — means the study is inherently backward-looking. By definition, Collins found what correlated with exceptional performance, but the causal direction is not always clear. It is possible that some of the identified traits (especially Level 5 leadership) are as much a consequence of sustained success as a cause of it. Several companies in the original study — including Circuit City and Fannie Mae — subsequently suffered major declines or failures, which raises questions about how durable the identified principles actually are when applied in changed environments.</p>
+      </div>
+
+      <div class="critique-card">
+        <p class="critique-label">Limited to Large, Publicly Traded U.S. Corporations</p>
+        <p>Collins explicitly limits the study to publicly traded U.S. corporations, excluding high-technology companies that lacked the necessary thirty-year track records. The methodology depends on stock return data as the objective measure of performance, which excludes private companies entirely and limits the international applicability of the findings. Collins believes the principles generalize, but the empirical basis for that claim is not in the book.</p>
+      </div>
+
+      <div class="critique-card">
+        <p class="critique-label">The Hedgehog Concept Is Harder to Find Than to Describe</p>
+        <p>The three-circles framework is intuitively compelling but practically difficult. Collins acknowledges it took good-to-great companies an average of four years to clarify their Hedgehog Concept — yet the book provides relatively little guidance on how to accelerate or structure that discovery process in a contemporary organization. The Council mechanism is introduced briefly. For practitioners trying to actually apply the framework, the gap between the clarity of the model and the messiness of finding one's own Hedgehog is significant and underaddressed.</p>
+      </div>
+
+      <div class="critique-card">
+        <p class="critique-label">Level 5 Leadership Resists Prescription</p>
+        <p>Collins is honest that he cannot offer a step-by-step path to Level 5 — the inner development of a person to this level remains a "black box within a black box." The finding is among the book's most powerful, but also its most frustrating for practical application. Organizations that take the finding seriously cannot simply decide to hire Level 5 leaders or train existing leaders into Level 5; the book identifies the destination without a reliable map to reach it.</p>
+      </div>
+
+      <div class="prose" style="margin-top: 24px;">
+        <p>These are real limitations, and intellectually honest readers should hold them in mind. None of them, however, substantially undermine the book's core value. The research methodology was more rigorous than almost any comparable management study. The framework is internally coherent and empirically grounded. And the counterintuitive findings — about celebrity leadership, about the role of technology, about change programs, about acquisitions — have proven durable across the two-plus decades since the book's publication. <em>Good to Great</em> remains among the most carefully constructed arguments in business literature, and one of the most useful frameworks for thinking about sustained organizational performance.</p>
+      </div>
+    </section>
+
+    <div style="margin-top: 52px;">
+      <a class="back-btn" href="index.html">← Back to Library</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Part of the Personal Reading Room library.</p>
+    <span class="footer-mono">good-to-great.html</span>
+  </footer>
+
+</body>
+</html>
