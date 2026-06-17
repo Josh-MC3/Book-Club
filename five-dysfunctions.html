@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Five Dysfunctions of a Team — Book Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:        #0F1B2D;
+      --navy-mid:    #1A2E47;
+      --spine:       #7B3F00;
+      --spine-light: #A0541A;
+      --spine-glow:  rgba(123,63,0,0.22);
+      --gold:        #C8A84B;
+      --gold-light:  #E8C96A;
+      --cream:       #F7F4EE;
+      --cream-dark:  #EDE9E1;
+      --divider:     #D9D4CA;
+      --slate:       #4A5568;
+      --slate-light: #718096;
+      --text:        #1A1A1A;
+      --amber:       #92400E;
+      --amber-bg:    #FFFBEB;
+    }
+    html { scroll-behavior: smooth; }
+    body { background-color: var(--cream); color: var(--text); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.6; }
+
+    /* BREADCRUMB */
+    .breadcrumb { background: var(--navy); padding: 14px 40px; display: flex; align-items: center; gap: 10px; }
+    .breadcrumb a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.15s; }
+    .breadcrumb a:hover { color: var(--gold); }
+    .breadcrumb-sep { font-size: 12px; color: rgba(255,255,255,0.2); }
+    .breadcrumb-current { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.70); }
+
+    /* HERO */
+    .hero { background-color: var(--navy); padding: 52px 40px 48px; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--spine); }
+    .hero-glow { position: absolute; top: 0; left: 0; width: 480px; height: 100%; background: radial-gradient(ellipse at 0% 50%, var(--spine-glow) 0%, transparent 70%); pointer-events: none; }
+    .hero-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--spine-light); margin-bottom: 18px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 700; color: #FFF; line-height: 1.1; margin-bottom: 10px; }
+    .hero-author { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: rgba(255,255,255,0.50); margin-bottom: 28px; }
+    .hero-meta-row { display: flex; gap: 28px; flex-wrap: wrap; }
+    .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .hero-meta-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.30); }
+    .hero-meta-value { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); }
+
+    /* TOC BAR */
+    .toc-bar { background: var(--navy-mid); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 40px; overflow-x: auto; }
+    .toc-inner { max-width: 860px; margin: 0 auto; display: flex; }
+    .toc-link { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.40); text-decoration: none; padding: 14px 16px; border-bottom: 2px solid transparent; white-space: nowrap; transition: color 0.15s, border-color 0.15s; }
+    .toc-link:hover { color: rgba(255,255,255,0.80); border-bottom-color: var(--spine-light); }
+
+    /* CONTENT */
+    .content-wrap { max-width: 860px; margin: 0 auto; padding: 56px 40px 80px; }
+    .section-anchor { padding-top: 20px; }
+    .section-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--spine-light); margin-bottom: 10px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 600; color: var(--navy); line-height: 1.2; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--divider); }
+
+    /* PROSE */
+    .prose { font-size: 0.9625rem; line-height: 1.78; color: var(--slate); }
+    .prose p { margin-bottom: 18px; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: var(--navy); font-weight: 600; }
+    .prose em { font-style: italic; }
+    .prose-h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; color: var(--navy); margin: 32px 0 12px; }
+
+    /* CALLOUT - spine mahogany */
+    .callout { background: #FFF; border-left: 4px solid var(--spine); border-radius: 0 4px 4px 0; padding: 20px 24px; margin: 28px 0; }
+    .callout-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--spine-light); margin-bottom: 8px; }
+    .callout p { font-size: 0.925rem; line-height: 1.70; color: var(--navy); margin: 0; }
+
+    /* CALLOUT - gold */
+    .callout-gold { background: var(--amber-bg); border-left: 4px solid var(--gold); border-radius: 0 4px 4px 0; padding: 20px 24px; margin: 28px 0; }
+    .callout-gold .callout-label { color: var(--amber); }
+    .callout-gold p { font-size: 0.925rem; line-height: 1.70; color: var(--amber); margin: 0; }
+
+    /* CALLOUT - warning */
+    .callout-warn { background: #FFF8F0; border-left: 4px solid #C05621; border-radius: 0 4px 4px 0; padding: 20px 24px; margin: 28px 0; }
+    .callout-warn .callout-label { color: #C05621; }
+    .callout-warn p { font-size: 0.925rem; line-height: 1.70; color: #5C3317; margin: 0; }
+
+    /* INSIGHT CARDS */
+    .insight-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; margin: 24px 0; }
+    .insight-card { background: #FFF; border: 1px solid var(--divider); border-top: 3px solid var(--spine); border-radius: 0 0 4px 4px; padding: 18px 20px; }
+    .insight-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--spine-light); margin-bottom: 8px; }
+    .insight-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+    .insight-body { font-size: 0.855rem; line-height: 1.60; color: var(--slate); }
+
+    /* DYSFUNCTION PYRAMID */
+    .pyramid-wrap { margin: 32px 0; }
+    .pyramid-level { display: flex; align-items: stretch; margin-bottom: 4px; }
+    .pyramid-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; color: #FFF; background: var(--spine); border-radius: 3px; padding: 4px 8px; white-space: nowrap; flex-shrink: 0; margin-right: 14px; align-self: center; }
+    .pyramid-card { flex: 1; background: #FFF; border: 1px solid var(--divider); border-left: 3px solid var(--spine); border-radius: 0 4px 4px 0; padding: 14px 18px 14px 16px; }
+    .pyramid-dysfunction { font-size: 0.9rem; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+    .pyramid-evidence { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--spine-light); margin-bottom: 6px; }
+    .pyramid-desc { font-size: 0.845rem; line-height: 1.60; color: var(--slate); }
+
+    /* PRINCIPLE CARDS */
+    .principle-group { margin: 28px 0; }
+    .principle-group-title { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--spine-light); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--cream-dark); }
+    .principle-list { display: flex; flex-direction: column; gap: 10px; }
+    .principle-item { background: #FFF; border: 1px solid var(--divider); border-left: 3px solid var(--spine); border-radius: 0 4px 4px 0; padding: 14px 18px 14px 16px; display: flex; gap: 14px; align-items: flex-start; }
+    .principle-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: #FFF; background: var(--spine); border-radius: 3px; padding: 2px 7px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+    .principle-content { flex: 1; }
+    .principle-name { font-size: 0.9rem; font-weight: 600; color: var(--navy); margin-bottom: 5px; }
+    .principle-desc { font-size: 0.845rem; line-height: 1.60; color: var(--slate); }
+
+    /* COMPARE TABLE */
+    .compare-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 0.875rem; }
+    .compare-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate-light); text-align: left; padding: 10px 16px; background: var(--cream-dark); border-bottom: 1px solid var(--divider); }
+    .compare-table td { padding: 12px 16px; border-bottom: 1px solid var(--cream-dark); vertical-align: top; color: var(--slate); line-height: 1.55; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: #FFF; }
+    .col-right { font-weight: 600; color: var(--navy); }
+    .col-wrong { color: #9B2020; }
+    .col-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--spine-light); white-space: nowrap; }
+
+    /* CRITIQUE CARD */
+    .critique-card { background: #FFF9F0; border: 1px solid #F0E0C0; border-left: 4px solid var(--gold); border-radius: 0 4px 4px 0; padding: 20px 24px; margin: 20px 0; }
+    .critique-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .critique-card p { font-size: 0.9rem; line-height: 1.70; color: #5C4A20; margin: 0; }
+
+    /* SECTION DIVIDER */
+    .section-divider { border: none; border-top: 1px solid var(--divider); margin: 52px 0 48px; }
+
+    /* BACK BUTTON */
+    .back-btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: var(--slate-light); text-decoration: none; margin-bottom: 40px; transition: color 0.15s; }
+    .back-btn:hover { color: var(--navy); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--divider); padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; max-width: 860px; margin: 0 auto; }
+    footer p { font-size: 12px; color: var(--slate-light); }
+    .footer-mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--divider); letter-spacing: 0.06em; }
+
+    @media (max-width: 680px) {
+      .breadcrumb, .hero, .content-wrap, footer { padding-left: 24px; padding-right: 24px; }
+      .toc-bar { padding: 0 20px; }
+      .hero { padding-top: 36px; padding-bottom: 36px; }
+      .content-wrap { padding-top: 36px; padding-bottom: 60px; }
+      .insight-grid { grid-template-columns: 1fr; }
+      .compare-table { font-size: 0.82rem; }
+      .compare-table th, .compare-table td { padding: 10px 12px; }
+      footer { flex-direction: column; gap: 10px; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="index.html">Library</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current">The Five Dysfunctions of a Team</span>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <p class="hero-label">Book Analysis — Leadership &amp; Teams</p>
+      <h1>The Five Dysfunctions<br>of a Team</h1>
+      <p class="hero-author">Patrick Lencioni</p>
+      <div class="hero-meta-row">
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Publisher</span>
+          <span class="hero-meta-value">Jossey-Bass / Wiley</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Published</span>
+          <span class="hero-meta-value">2002</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Format</span>
+          <span class="hero-meta-value">Leadership fable + model reference</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Core Argument</span>
+          <span class="hero-meta-value">Teamwork fails not from strategy or resources, but from five predictable, interrelated human behaviors</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="toc-bar" aria-label="Page sections">
+    <div class="toc-inner">
+      <a class="toc-link" href="#overview">Overview</a>
+      <a class="toc-link" href="#fable">The Fable</a>
+      <a class="toc-link" href="#model">The Model</a>
+      <a class="toc-link" href="#d1">Dysfunction 1: Trust</a>
+      <a class="toc-link" href="#d2">Dysfunction 2: Conflict</a>
+      <a class="toc-link" href="#d3">Dysfunction 3: Commitment</a>
+      <a class="toc-link" href="#d4">Dysfunction 4: Accountability</a>
+      <a class="toc-link" href="#d5">Dysfunction 5: Results</a>
+      <a class="toc-link" href="#themes">Themes</a>
+      <a class="toc-link" href="#takeaways">Key Takeaways</a>
+      <a class="toc-link" href="#critique">Critique</a>
+    </div>
+  </nav>
+
+  <div class="content-wrap">
+    <a class="back-btn" href="index.html">← Back to Library</a>
+
+    <!-- OVERVIEW -->
+    <section class="section-anchor" id="overview">
+      <p class="section-eyebrow">What This Book Is</p>
+      <h2 class="section-title">Overview &amp; Core Argument</h2>
+      <div class="prose">
+        <p><em>The Five Dysfunctions of a Team</em> opens with a declaration that cuts against everything most organizations actually do: "Not finance. Not strategy. Not technology. It is teamwork that remains the ultimate competitive advantage, both because it is so powerful and so rare." Lencioni's premise is that teams consistently underperform not because of insufficient resources, misaligned strategies, or inadequate talent — but because of a predictable set of human behavioral failures that, left unaddressed, make genuine collective effort nearly impossible.</p>
+        <p>The book is structured in two parts. The first and longer section is a leadership fable: a realistic fictional story about Kathryn Petersen, a new CEO hired to turn around a struggling Silicon Valley technology company whose well-credentialed executive team is producing results far below its apparent potential. The second section strips away the narrative and articulates the five dysfunctions as a formal model, complete with behavioral diagnostics, overcoming strategies, and the role of the leader at each level.</p>
+        <p>Lencioni's structural choice — a story first, framework second — is deliberate and effective. The fable allows readers to observe the dysfunctions as behavior in context, rather than as abstract principles. By the time the model is formally presented, readers have already internalized what it describes through the DecisionTech narrative. The framework then serves as a distillation and reference, not an introduction.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">The Core Paradox</p>
+        <p>Lencioni's central observation is both obvious and largely ignored: <strong>teams are made up of imperfect human beings and are therefore inherently dysfunctional.</strong> But dysfunction is not destiny. The five failures he identifies are predictable, addressable, and — critically — interrelated. Overcoming even one of them creates positive momentum through the entire chain. Failing to address even one is, like a broken link, potentially lethal to the team.</p>
+      </div>
+
+      <div class="insight-grid">
+        <div class="insight-card">
+          <p class="insight-label">Format</p>
+          <p class="insight-title">Fable First, Framework Second</p>
+          <p class="insight-body">Lencioni had previously written <em>The Five Temptations of a CEO</em> as a fable. When clients began applying those principles to team dynamics, he adapted the format here. The story makes the concepts emotionally resonant and practically grounded before the model codifies them.</p>
+        </div>
+        <div class="insight-card">
+          <p class="insight-label">Applicability</p>
+          <p class="insight-title">Not Just Executive Teams</p>
+          <p class="insight-body">Though the fable centers on a Silicon Valley executive team, Lencioni is explicit that the model applies to any team — department-level, project-based, nonprofit, military, athletic. The behavioral dynamics are human, not organizational. Wherever people work together toward shared results, the five dysfunctions can appear.</p>
+        </div>
+        <div class="insight-card">
+          <p class="insight-label">The Rare Thing</p>
+          <p class="insight-title">Genuine Teamwork Is Uncommon</p>
+          <p class="insight-body">Despite decades of scholarly attention and organizational investment in "team building," Lencioni argues that genuine cohesive teamwork remains rare. The reason is not lack of awareness but lack of willingness to sustain the uncomfortable behaviors — vulnerability, conflict, discipline — that make real teamwork possible.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- THE FABLE -->
+    <section class="section-anchor" id="fable">
+      <p class="section-eyebrow">The Story</p>
+      <h2 class="section-title">The Fable: DecisionTech &amp; Kathryn Petersen</h2>
+      <div class="prose">
+        <p>DecisionTech is a Silicon Valley start-up that appears to have every advantage: a well-funded business plan, a credentialed executive team, superior technology, and strong board backing. And yet, two years in, the company is falling behind competitors with far fewer resources. The board removes the founding CEO and hires Kathryn Petersen — fifty-seven years old, no tech experience, background in automotive manufacturing — a choice the executive team greets with barely concealed contempt.</p>
+        <p>Kathryn spends her first two weeks doing almost nothing visible. She walks the halls, observes meetings without intervening, and then announces a series of two-day off-site retreats. The team is skeptical. They are already behind on everything; sitting in Napa talking about feelings is not what they think they need. They are wrong about what they need, and right that what Kathryn has planned will be uncomfortable.</p>
+        <p>The executive team includes Jeff (the demoted former CEO), Mikey (marketing, brilliant but socially destructive), Martin (CTO, intellectually formidable and interpersonally indifferent), Nick (operations, capable and sardonic), JR (sales, charming and accountability-averse), Jan (CFO, detail-oriented but isolated), and Carlos (COO, reliable and perpetually undervalued). Each represents a real archetype of how individual talent can coexist with collective dysfunction.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">The Kathryn Insight</p>
+        <p>Kathryn's diagnosis of DecisionTech is delivered at the first off-site: "We have a more experienced and talented executive team than any of our competitors. We have more cash. Better technology. A more powerful board. And yet we are behind two competitors in revenue and customer growth. The problem is not any of those things. <strong>We are not functioning as a team.</strong>" Her entire method follows from this. Every tool she uses is designed to expose and address a specific link in the dysfunction chain.</p>
+      </div>
+
+      <div class="principle-group">
+        <p class="principle-group-title">Key Fable Characters &amp; Their Dysfunctions</p>
+        <div class="principle-list">
+          <div class="principle-item">
+            <span class="principle-num">Mikey</span>
+            <div class="principle-content">
+              <p class="principle-name">VP of Marketing — Inattention to Results, Absence of Trust</p>
+              <p class="principle-desc">The most dangerous character in the fable. Genuinely talented but fundamentally unable to subordinate her own ego and sense of professional identity to the team's collective goals. She performs vulnerability in the exercises while delivering nothing of it. Her eye-rolling, defensive deflections, and inability to accept that the company's failure is also her failure make her the clearest embodiment of what happens when individual status takes precedence over shared results. She is eventually asked to leave.</p>
+            </div>
+          </div>
+          <div class="principle-item">
+            <span class="principle-num">Martin</span>
+            <div class="principle-content">
+              <p class="principle-name">CTO — Fear of Conflict, Absence of Trust</p>
+              <p class="principle-desc">The laptop-open, checked-out meeting attendee. His disengagement is not malice — it is a combination of interpersonal discomfort and the belief that most of what others say is not worth his attention. Kathryn's early confrontation with him (closing the laptop, setting ground rules without drama) is the fable's first demonstration that trust is built not just through vulnerability but through clear, respectful standards of engagement. Martin gradually becomes one of the team's better performers once those standards are established.</p>
+            </div>
+          </div>
+          <div class="principle-item">
+            <span class="principle-num">Nick</span>
+            <div class="principle-content">
+              <p class="principle-name">Head of Operations — Avoidance of Accountability</p>
+              <p class="principle-desc">Smart, effective, self-aware enough to name his arrogance as a weakness. His challenge to Kathryn's model is always sharpest — not from bad faith, but from the instinct of a capable person who suspects he can get by without the team. His eventual acceptance of the model is the fable's indicator that even resistant high performers can be brought along when the reasoning is clear and the leader is consistent.</p>
+            </div>
+          </div>
+          <div class="principle-item">
+            <span class="principle-num">Jeff</span>
+            <div class="principle-content">
+              <p class="principle-name">Former CEO, Business Development — Lack of Commitment</p>
+              <p class="principle-desc">His admission during the vulnerability exercise — that his fear of failure made him over-engineer everything and avoid giving others direction, and that this is probably the biggest reason the company had not succeeded under his leadership — is one of the fable's most honest moments. His transition from the person who let meetings meander to a genuine contributor is the clearest example of what happens when commitment replaces process-management as the operating norm.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout-gold">
+        <p class="callout-label">Politics Defined</p>
+        <p>One of the fable's most useful moments: when the team pushes back on Kathryn's claim that they are "political," she defines the term precisely. <strong>"Politics is when people choose their words and actions based on how they want others to react rather than based on what they really think."</strong> Martin, the skeptic, cuts through the tension: "Okay, we're definitely political." The definition reframes politics not as scheming or manipulation but as a subtle, pervasive failure of honesty — and makes it immediately recognizable.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- THE MODEL -->
+    <section class="section-anchor" id="model">
+      <p class="section-eyebrow">The Framework</p>
+      <h2 class="section-title">The Five Dysfunctions Model</h2>
+      <div class="prose">
+        <p>The model is presented as a pyramid — five levels stacked from foundation to apex — where each dysfunction enables the one above it. This is the critical structural insight: the dysfunctions are not five independent problems to be solved in isolation. They form a causal chain. A team cannot address fear of conflict without first building trust. A team cannot commit without genuine conflict. Accountability requires clear commitments. And results require accountability. Remove or weaken any single link, and the structure above it collapses.</p>
+        <p>Lencioni also offers the inverse: what truly cohesive teams look like when the dysfunctions are overcome. Members trust one another, engage in unfiltered debate around ideas, commit fully to decisions even when they initially disagreed, hold each other accountable for those commitments, and focus relentlessly on collective results. The positive version of the model is not idealistic — it is simply what happens when the natural human tendencies toward self-protection and ego are consistently overridden by discipline and trust.</p>
+      </div>
+
+      <div class="pyramid-wrap">
+        <div class="pyramid-level">
+          <span class="pyramid-num">5</span>
+          <div class="pyramid-card">
+            <p class="pyramid-dysfunction">Inattention to Results</p>
+            <p class="pyramid-evidence">Evidence: Status-seeking, individual recognition over collective goals</p>
+            <p class="pyramid-desc">The apex dysfunction. Members focus on their own career advancement, departmental success, or personal ego rather than the shared objectives of the group. Results become secondary to looking good individually.</p>
+          </div>
+        </div>
+        <div class="pyramid-level">
+          <span class="pyramid-num">4</span>
+          <div class="pyramid-card">
+            <p class="pyramid-dysfunction">Avoidance of Accountability</p>
+            <p class="pyramid-evidence">Evidence: Low standards, missed deadlines, interpersonal discomfort</p>
+            <p class="pyramid-desc">Without clear commitments, no one can reasonably be held accountable. Members avoid the discomfort of calling peers on performance or behavior, letting standards erode and resentment accumulate quietly.</p>
+          </div>
+        </div>
+        <div class="pyramid-level">
+          <span class="pyramid-num">3</span>
+          <div class="pyramid-card">
+            <p class="pyramid-dysfunction">Lack of Commitment</p>
+            <p class="pyramid-evidence">Evidence: Ambiguity, revisiting decisions, feigned agreement</p>
+            <p class="pyramid-desc">Without having aired opinions in open debate, members never fully buy in. They may appear to agree in the meeting and then quietly undermine the decision — or simply fail to act on it with conviction.</p>
+          </div>
+        </div>
+        <div class="pyramid-level">
+          <span class="pyramid-num">2</span>
+          <div class="pyramid-card">
+            <p class="pyramid-dysfunction">Fear of Conflict</p>
+            <p class="pyramid-evidence">Evidence: Artificial harmony, boring meetings, back-channel politics</p>
+            <p class="pyramid-desc">Without trust, members cannot engage in the unfiltered debate of ideas that produces real solutions. Controversial topics are avoided; tension goes underground and surfaces as passive aggression or political maneuvering.</p>
+          </div>
+        </div>
+        <div class="pyramid-level">
+          <span class="pyramid-num">1</span>
+          <div class="pyramid-card">
+            <p class="pyramid-dysfunction">Absence of Trust</p>
+            <p class="pyramid-evidence">Evidence: Concealed weaknesses, political behavior, reluctance to ask for help</p>
+            <p class="pyramid-desc">The foundation. Without vulnerability-based trust — the confidence that teammates' intentions are good and that exposing weakness will not be used against you — every other behavior above it becomes impossible or performative.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout-warn">
+        <p class="callout-label">The Chain Warning</p>
+        <p>Lencioni is explicit: "Like a chain with just one link broken, teamwork deteriorates if even a single dysfunction is allowed to flourish." This means partial progress is not stable. A team that builds trust and embraces conflict but fails to commit will find that its debates produce nothing. A team that commits but avoids accountability will watch commitments erode quietly. The model only works as a whole.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- DYSFUNCTION 1 -->
+    <section class="section-anchor" id="d1">
+      <p class="section-eyebrow">Dysfunction One</p>
+      <h2 class="section-title">Absence of Trust</h2>
+      <div class="prose">
+        <p>Lencioni draws a sharp distinction between the trust most people mean — the ability to predict a colleague's behavior based on track record — and the kind of trust that makes great teams possible. Predictive trust is useful but insufficient. <strong>Vulnerability-based trust</strong> requires something harder: the willingness to expose weaknesses, admit mistakes, ask for help, and acknowledge skill gaps without fear that those admissions will be weaponized by teammates. This is the foundation because without it, every interaction on the team becomes performance management — carefully controlled to protect reputation rather than focused on actually solving the problem.</p>
+        <p>The fable illustrates this through the vulnerability exercise. Kathryn asks each executive to name their most significant strength and weakness relative to the team's success. The responses that land — Jeff's admission about his fear of failure, Martin's acknowledgment that he comes across as dismissive, Nick's candor about his arrogance — immediately change the room's energy. Mikey's shallow response (her weakness is "poor financial skills") achieves the opposite: it confirms to the team that she is still protecting herself, not engaging. Vulnerability is binary in its effect: you either extend it or you don't, and the team can always tell.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">The Personal Histories Insight</p>
+        <p>Kathryn opens the first off-site not with a business review but with a personal histories exercise: five low-risk questions about each person's background. Within forty-five minutes, the team has learned things about each other they had not known in two years of working together. The transformation in tone is immediate. Lencioni's point: <strong>even small amounts of genuine personal disclosure begin to break down the barriers that prevent real trust.</strong> You cannot trust someone you do not know as a human being.</p>
+      </div>
+
+      <div class="principle-group">
+        <p class="principle-group-title">Signs of Trust Absence vs. Trust Present</p>
+        <div class="principle-list">
+          <div class="principle-item">
+            <span class="principle-num">Absent</span>
+            <div class="principle-content">
+              <p class="principle-name">Concealing weaknesses and mistakes</p>
+              <p class="principle-desc">Members manage impressions rather than solve problems. Energy that should go toward the work goes toward protecting reputation. Mistakes get discovered late, and by then the damage is compounded by the cover-up.</p>
+            </div>
+          </div>
+          <div class="principle-item">
+            <span class="principle-num">Absent</span>
+            <div class="principle-content">
+              <p class="principle-name">Hesitating to ask for help or offer it outside one's own area</p>
+              <p class="principle-desc">Members stay in their lanes not from respect for boundaries but from fear that asking for help signals incompetence. Collaboration becomes transactional or absent. Skills that exist on the team go untapped because no one reveals they need them.</p>
+            </div>
+          </div>
+          <div class="principle-item">
+            <span class="principle-num">Present</span>
+            <div class="principle-content">
+              <p class="principle-name">Admitting mistakes quickly, asking for help without hesitation</p>
+              <p class="principle-desc">Members bring problems to the team early, when they are still solvable. Help is offered and accepted as a normal part of how the team operates — not as a sign of weakness in the person asking or a transaction that creates obligation.</p>
+            </div>
+          </div>
+          <div class="principle-item">
+            <span class="principle-num">Present</span>
+            <div class="principle-content">
+              <p class="principle-name">Giving benefit of the doubt before drawing negative conclusions</p>
+              <p class="principle-desc">Members interpret ambiguous behavior charitably rather than politically. When a peer misses a deadline or fails to follow through, the first assumption is obstacle — not malice or incompetence. This dramatically reduces the energy spent on interpersonal suspicion.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout-gold">
+        <p class="callout-label">The Leader's Role</p>
+        <p>The leader must go first. Vulnerability cannot be mandated; it must be modeled. Kathryn demonstrates this herself at the start of the exercise — naming her weakness as an external spokesperson, something genuinely awkward for a CEO to admit publicly. <strong>A leader who demands vulnerability from others without demonstrating it personally will create performance, not trust.</strong> And performed vulnerability — staged admissions designed to look humble — is detected immediately and destroys credibility.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- DYSFUNCTION 2 -->
+    <section class="section-anchor" id="d2">
+      <p class="section-eyebrow">Dysfunction Two</p>
+      <h2 class="section-title">Fear of Conflict</h2>
+      <div class="prose">
+        <p>Of all five dysfunctions, fear of conflict is the one most commonly mistaken for a virtue. Teams that suppress disagreement often believe they are maintaining professionalism, protecting relationships, or respecting colleagues' time. Lencioni argues the opposite: <strong>conflict avoidance is not professional courtesy — it is a failure of courage that produces worse outcomes, not better ones.</strong></p>
+        <p>The distinction he draws is between ideological conflict — passionate, focused disagreement about ideas and approaches — and destructive interpersonal conflict involving personal attacks and political maneuvering. Great teams engage in the former and eliminate the latter. But here is the irony: teams that avoid ideological conflict to preserve harmony almost always end up with more destructive conflict, not less. Suppressed frustrations surface as passive aggression, back-channel politics, eye-rolling, and resentment. The argument that didn't happen in the meeting happens in hallways, in private conversations, and eventually in organizational dysfunction. Avoiding conflict doesn't make it go away; it just makes it worse and harder to address.</p>
+        <p>The DecisionTech team, Kathryn observes, has no shortage of tension — but it has almost no productive conflict. Issues that should be debated openly are tabled, off-lined, or silently dropped. The result is that important decisions never get made cleanly, the same topics resurface meeting after meeting without resolution, and the team operates under a permanent fog of unspoken disagreement.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">Artificial Harmony vs. Productive Conflict</p>
+        <p>Kathryn makes the distinction directly to her team: "I'd trade that false kind of harmony any day for a team's willingness to argue effectively about an issue and then walk away with no collateral damage." The ideal is not a team that avoids disagreement — it is a team that <strong>disagrees productively and then moves on completely.</strong> Heated debate around ideas, followed by full unity behind the decision — that is the target, not absence of debate.</p>
+      </div>
+
+      <div class="principle-group">
+        <p class="principle-group-title">Teams That Fear Conflict vs. Teams That Engage It</p>
+        <div class="principle-list">
+          <div class="principle-item">
+            <span class="principle-num">Fear</span>
+            <div class="principle-content">
+              <p class="principle-name">Boring meetings, artificial harmony, back-channel politics</p>
+              <p class="principle-desc">When nothing of real substance is debated openly, meetings become performance exercises — people saying what is safe to say. The real discussion happens afterward, in pairs, in whispers. The team's actual intelligence is never applied to the team's actual problems.</p>
+            </div>
+          </div>
+          <div class="principle-item">
+            <span class="principle-num">Fear</span>
+            <div class="principle-content">
+              <p class="principle-name">Issues revisited endlessly without resolution</p>
+              <p class="principle-desc">Conflict-averse teams often mistake "tabling" an issue for efficiency. In reality, unresolved issues return to the agenda meeting after meeting, consuming far more total time than a single productive argument would have — and producing worse outcomes, because the team never fully commits to anything.</p>
+            </div>
+          </div>
+          <div class="principle-item">
+            <span class="principle-num">Engage</span>
+            <div class="principle-content">
+              <p class="principle-name">Lively meetings where all perspectives are on the table</p>
+              <p class="principle-desc">When the team has earned the right to disagree (through trust), meetings become genuinely productive. Ideas get stress-tested. Problems get identified earlier. The best thinking of everyone in the room is actually applied to the problem, not just the thinking of the most comfortable speakers.</p>
+            </div>
+          </div>
+          <div class="principle-item">
+            <span class="principle-num">Engage</span>
+            <div class="principle-content">
+              <p class="principle-name">Real problems solved quickly, with no residual damage</p>
+              <p class="principle-desc">The hallmark of productive conflict: the argument ends, the team moves on completely, and there is no residual resentment. This is only possible when trust is present — when members know that disagreement is about the idea, not the person, and that no one's position in the group is threatened by the debate.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- DYSFUNCTION 3 -->
+    <section class="section-anchor" id="d3">
+      <p class="section-eyebrow">Dysfunction Three</p>
+      <h2 class="section-title">Lack of Commitment</h2>
+      <div class="prose">
+        <p>Commitment in Lencioni's model is not about agreement — it is about clarity and buy-in. A team can commit fully to a decision that not every member preferred, as long as every member had the opportunity to voice their perspective and felt genuinely heard. The phrase Lencioni uses from the fable captures it: "disagree and commit." You can argue your position vigorously, lose the vote, and still leave the room fully behind the decision — not grudgingly complying, but actively supporting it. This is the standard great teams hold.</p>
+        <p>The two enemies of commitment are the desire for consensus and the need for certainty. Consensus-seeking produces decisions that are watered down to the point of inaction, or that are never made at all. Certainty-seeking produces paralysis: teams that wait until all possible data is available before deciding routinely discover that the window has closed while they were still deliberating. Lencioni argues that a bold wrong decision is usually better than no decision, because at least it can be corrected. Prolonged ambiguity cannot be corrected — it just continues to compound.</p>
+        <p>One of the most important downstream effects of commitment failure is what Lencioni calls the "cascading ambiguity" problem. When executives fail to reach clear agreement, the ambiguity doesn't stay at the executive level — it ripples down through the organization. People reporting to different executives receive slightly different signals about priorities, and by the time those signals reach the front line, they have diverged into contradictions. The source of a great deal of organizational dysfunction — competing priorities, interdepartmental confusion, misaligned effort — is not poor execution. It is uncommitted leadership.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">Weigh In to Buy In</p>
+        <p>Lencioni's most useful formulation on this dysfunction: people need to weigh in before they can buy in. You do not need to get your way. You do not need consensus. But you need the genuine experience of having your perspective heard and considered before a decision is made. Teams that skip this step in the name of efficiency pay for it downstream in ambiguity, second-guessing, and quiet non-compliance.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- DYSFUNCTION 4 -->
+    <section class="section-anchor" id="d4">
+      <p class="section-eyebrow">Dysfunction Four</p>
+      <h2 class="section-title">Avoidance of Accountability</h2>
+      <div class="prose">
+        <p>Accountability, as Lencioni uses the term, is specifically about peer accountability — the willingness of team members to call each other on performance or behaviors that are hurting the team. This is distinct from manager-to-direct-report accountability, which most organizations handle (however imperfectly) through formal processes. Peer accountability is what most teams lack, and what most individuals find uncomfortable enough to avoid even when they know it is necessary.</p>
+        <p>The discomfort is real and Lencioni acknowledges it directly. Telling a peer that their work is not up to standard, that their behavior in meetings is damaging the team, or that they are not pulling their weight is interpersonally difficult in a way that telling a subordinate is not. There is no hierarchy to rely on, no formal authority to invoke. The call to accountability between peers is an act of pure relationship risk, and most people find reasons not to take it.</p>
+        <p>But the cost of not taking it is higher than the cost of the discomfort. <strong>When peers avoid holding each other accountable, they place the entire burden on the leader</strong> — who then becomes the team's sole source of discipline, which creates an accountability vacuum everywhere else. It also generates exactly the kind of slow-burning resentment that destroys team cohesion: when one person sees a peer underperforming without consequence, their own motivation erodes. The most effective enforcement mechanism in any team is not a manager's intervention but the social reality of not wanting to let down respected colleagues.</p>
+      </div>
+
+      <div class="callout-warn">
+        <p class="callout-label">The Accountability Vacuum</p>
+        <p>Lencioni identifies a paradox: leaders who are particularly strong — authoritative, decisive, always ready with the answer — often unintentionally destroy their teams' accountability culture. Team members assume the leader is handling it. So they hold back. And the leader, seeing no peer accountability, steps in more. The loop reinforces itself until the team cannot function without the leader's active management of every performance issue. Breaking this cycle requires the leader to explicitly and repeatedly resist the temptation to be the first intervener.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- DYSFUNCTION 5 -->
+    <section class="section-anchor" id="d5">
+      <p class="section-eyebrow">Dysfunction Five</p>
+      <h2 class="section-title">Inattention to Results</h2>
+      <div class="prose">
+        <p>The apex of the pyramid is the tendency of team members to prioritize something other than the collective goals of the group. Lencioni identifies two primary substitutes: individual status (focusing on personal career advancement, reputation, or recognition) and team status (taking satisfaction in the prestige of being on the team, regardless of what the team is actually accomplishing). Both represent a fundamental misalignment between personal motivation and team purpose.</p>
+        <p>The basketball analogy from the fable makes the point vividly: Kathryn's husband once benched his most talented player because the player cared more about his own statistics than whether the team won. Without that player, the team played better — because everyone remaining was oriented toward the same score. <strong>Individual talent that is not oriented toward collective results is not an asset; it is a liability.</strong> This is the logic behind Mikey's eventual departure from DecisionTech. Her marketing skills were real. But her inability to subsume her individual identity into the team's shared success made her more destructive than constructive.</p>
+        <p>Results, Lencioni is careful to specify, are not exclusively financial. The model applies to whatever the team has committed to achieving in a given period — customer growth, product quality, employee retention, or any other measurable collective outcome. The key is that they must be specific enough to be unambiguous. Vague goals ("we'll do our best") create the conditions in which individual status can quietly substitute for collective results, because no one can clearly define what success looks like.</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">The Scoreboard Principle</p>
+        <p>Martin, the CTO, articulates the insight when Kathryn asks why sports metaphors resonate in discussions of teamwork: "The score. In most sports there is a clear score at the end of the game. There is little room for ambiguity — for subjective, interpretive, ego-driven success." Great teams apply this to their work: they define results specifically enough that the score is unmistakable. When the scoreboard is clear, <strong>individual ego has nowhere to hide.</strong> Everyone can see, objectively, whether the team won or lost — and no personal performance narrative can substitute for it.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- CROSS-CUTTING THEMES -->
+    <section class="section-anchor" id="themes">
+      <p class="section-eyebrow">Synthesis</p>
+      <h2 class="section-title">Cross-Cutting Themes</h2>
+
+      <p class="prose-h3">1. The Dysfunctions Are Human, Not Organizational</p>
+      <div class="prose">
+        <p>None of the five dysfunctions are the product of bad corporate structure, poor incentive design, or inadequate technology. They are the direct expression of natural human tendencies: self-protection, conflict avoidance, desire for certainty, reluctance to hold relationships at risk, preference for personal recognition over collective outcomes. Every human being carries all five of these tendencies. What distinguishes great teams is not the absence of these tendencies but the consistent, disciplined choice to override them in service of the group.</p>
+      </div>
+
+      <p class="prose-h3">2. Simplicity Is the Point</p>
+      <div class="prose">
+        <p>Kathryn tells her team at the first off-site: "None of this is rocket science. In fact, it will seem remarkably simple on paper. The trick is putting it into practice." Lencioni's model has exactly five elements with clear labels and a logical sequence. This is not accidental — it is the design. The barrier to building a great team is not understanding what to do. It is the sustained will to actually do it, in full, consistently, across weeks and months and years. A complex model would make an already-difficult practice even less likely to be attempted.</p>
+      </div>
+
+      <p class="prose-h3">3. The First Team Problem</p>
+      <div class="prose">
+        <p>One of the fable's most important points is made when Kathryn challenges the executives to identify their "first team." For most of them, the answer is their direct reports — the people in their own departments who work for them. Kathryn insists it must be the executive team itself. This reorientation is foundational to the entire model: <strong>an executive who prioritizes the loyalty of their department over the success of the cross-functional team will always sacrifice the latter for the former</strong>, often unconsciously. And the cascade of small departmental protections, each individually rational, produces collective failure.</p>
+      </div>
+
+      <div class="compare-table-wrap" style="overflow-x:auto; margin: 28px 0;">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th class="col-label">Dysfunction</th>
+              <th>What It Looks Like in Practice</th>
+              <th>What Overcoming It Produces</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-label">Absence of Trust</td>
+              <td class="col-wrong">Members manage impressions; issues surface late; energy goes to protection</td>
+              <td class="col-right">Members bring problems early; help is sought and given freely; meetings become real</td>
+            </tr>
+            <tr>
+              <td class="col-label">Fear of Conflict</td>
+              <td class="col-wrong">Boring meetings; issues tabled endlessly; frustration goes underground</td>
+              <td class="col-right">Ideas are stress-tested; decisions are better; no back-channel politics</td>
+            </tr>
+            <tr>
+              <td class="col-label">Lack of Commitment</td>
+              <td class="col-wrong">Ambiguous direction; same decisions revisited; quiet non-compliance</td>
+              <td class="col-right">Clear priorities; unified action; ability to change course without guilt</td>
+            </tr>
+            <tr>
+              <td class="col-label">Avoidance of Accountability</td>
+              <td class="col-wrong">Mediocrity tolerated; resentment toward underperformers; leader bears all discipline</td>
+              <td class="col-right">Peer pressure maintains standards; problems identified early; no need for bureaucracy</td>
+            </tr>
+            <tr>
+              <td class="col-label">Inattention to Results</td>
+              <td class="col-wrong">Individual careers prioritized; departmental turf protected; collective failure</td>
+              <td class="col-right">Shared urgency; ego subordinated to outcomes; achievement-oriented culture</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- KEY TAKEAWAYS -->
+    <section class="section-anchor" id="takeaways">
+      <p class="section-eyebrow">The Bottom Line</p>
+      <h2 class="section-title">Key Takeaways</h2>
+      <div class="prose">
+        <p>Lencioni closes the book with a statement worth taking seriously: "Teamwork ultimately comes down to practicing a small set of behaviors over a long period of time. Success is not a matter of mastering subtle, sophisticated theory, but rather of embracing common sense with uncommon levels of discipline and persistence." The model is simple. The practice is not. Everything below follows from that gap.</p>
+      </div>
+
+      <div class="insight-grid">
+        <div class="insight-card">
+          <p class="insight-label">On Trust</p>
+          <p class="insight-title">Vulnerability Is the Foundation, Not a Nice-to-Have</p>
+          <p class="insight-body">Trust in Lencioni's model is not predictability or reliability — it is the willingness to be exposed to your teammates without fear of political consequences. Without it, every interaction on the team is filtered through self-protection, and the team's intelligence is never fully brought to bear on its actual problems.</p>
+        </div>
+        <div class="insight-card">
+          <p class="insight-label">On Conflict</p>
+          <p class="insight-title">Suppressed Conflict Doesn't Disappear — It Gets Worse</p>
+          <p class="insight-body">Teams that avoid productive ideological conflict to "keep the peace" almost always end up with more destructive conflict, not less. The argument that doesn't happen in the meeting happens in hallways and whispers — with no possibility of resolution and significant corrosive effects on trust and morale.</p>
+        </div>
+        <div class="insight-card">
+          <p class="insight-label">On Commitment</p>
+          <p class="insight-title">Consensus Is Not the Goal — Buy-In Is</p>
+          <p class="insight-body">Complete agreement is not required for full commitment. People need to be heard and genuinely considered, not to prevail. Once that condition is met, most reasonable people can commit fully to a decision they didn't prefer — and the team can move with the unified force that produces results.</p>
+        </div>
+        <div class="insight-card">
+          <p class="insight-label">On Accountability</p>
+          <p class="insight-title">Peer Pressure Is the Most Effective Enforcement Mechanism</p>
+          <p class="insight-body">No management system or HR process is as motivating as the social reality of not wanting to let down teammates who trust and respect you. Teams that achieve peer accountability eliminate the need for most of the bureaucratic performance-management structures that consume organizational energy — because the team itself enforces its standards.</p>
+        </div>
+        <div class="insight-card">
+          <p class="insight-label">On Results</p>
+          <p class="insight-title">Define Results Specifically Enough to Make Ego Irrelevant</p>
+          <p class="insight-body">Vague goals create the space where individual status substitutes for collective outcomes. When results are defined with the clarity of a scoreboard — specific, measurable, unmistakable — individual narrative cannot compete with team reality. Everyone can see the score, and personal success stories that don't match it become impossible to sustain.</p>
+        </div>
+        <div class="insight-card">
+          <p class="insight-label">On Leadership</p>
+          <p class="insight-title">The Leader Must Be the First to Do the Hard Thing</p>
+          <p class="insight-body">At every level of the model, the leader's behavior sets the condition. The leader demonstrates vulnerability first. The leader models productive conflict rather than suppressing it. The leader tolerates the discomfort of peer accountability rather than rescuing the team from it. The leader focuses visibly and relentlessly on collective results over individual recognition. Without this modeling, the team has no permission to do the same.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- CRITIQUE -->
+    <section class="section-anchor" id="critique">
+      <p class="section-eyebrow">Critical Reading</p>
+      <h2 class="section-title">Where to Push Back</h2>
+      <div class="prose">
+        <p>The book has sold millions of copies and remained required reading in executive development programs for more than two decades — a duration that suggests the model captures something genuinely true. But several tensions are worth holding alongside it.</p>
+      </div>
+
+      <div class="critique-card">
+        <p class="critique-label">The Conflict Standard Is Hard to Calibrate</p>
+        <p>Lencioni's distinction between "productive ideological conflict" and "destructive interpersonal conflict" is clear in theory and genuinely difficult to maintain in practice. The fable acknowledges this (conflict "can have many of the same external qualities of interpersonal conflict — passion, emotion, and frustration") but does not give leaders much practical guidance on when to let a debate continue and when to intervene. Teams that read this book and attempt to increase conflict often discover that not all of their members have the same capacity for — or definition of — productive disagreement.</p>
+      </div>
+
+      <div class="critique-card">
+        <p class="critique-label">The Model Assumes a Stable Team Composition</p>
+        <p>Lencioni's framework is most powerful when applied to a team whose membership is relatively stable over time. In practice, many leadership teams experience significant turnover, restructuring, or expansion. Each new member resets the trust-building process, and the team must revisit earlier layers of the model as membership changes. The book provides little guidance on how to handle these transitions, which can be frustrating for leaders who have invested heavily in the process only to see it disrupted by organizational change.</p>
+      </div>
+
+      <div class="critique-card">
+        <p class="critique-label">Mikey's Dismissal Is the Least Examined Moment</p>
+        <p>The decision to remove Mikey is framed in the fable as a clean, necessary conclusion — the team improves measurably after she leaves. But the path to that decision, and the questions it raises about how long leaders should invest in team members before concluding they cannot change, are not deeply explored. In practice, the line between "this person needs more time and support" and "this person cannot adapt to the team's values" is far harder to draw than the fable implies. Real leaders facing real equivalents of Mikey rarely find the decision as clear as it appears here.</p>
+      </div>
+
+      <div class="critique-card">
+        <p class="critique-label">The Fable Medium Has Limits</p>
+        <p>The narrative format makes the concepts accessible and emotionally resonant — that is its great strength. But it also means the model is illustrated through a single story with a conveniently representative cast of characters. Readers whose teams do not map neatly onto Lencioni's archetypes may find the application less obvious. The reference section at the back of the book provides more structured guidance, but it is necessarily brief. Teams that want to implement the model seriously will find themselves needing resources beyond what the book itself provides.</p>
+      </div>
+
+      <div class="callout-gold">
+        <p class="callout-label">The Lasting Value</p>
+        <p>Despite these limitations, the model's durability is earned. Lencioni names something that most leaders know is true and most organizations systematically avoid confronting: <strong>the limiting factor on almost every team's performance is not talent or resources or strategy — it is the quality of human behavior within the group.</strong> The five dysfunctions give leaders a precise vocabulary for diagnosing what is actually wrong, a logical sequence for addressing it, and the reassurance that what they are dealing with is predictable, not unique. That combination — accurate diagnosis, logical sequence, normalized difficulty — explains why this book stays on shelves long after most leadership books are forgotten.</p>
+      </div>
+    </section>
+
+  </div><!-- /content-wrap -->
+
+  <footer>
+    <p>Personal reading library — updated as analyses are completed.</p>
+    <span class="footer-mono">five-dysfunctions.html</span>
+  </footer>
+
+</body>
+</html>
